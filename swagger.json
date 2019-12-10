@@ -1,0 +1,171 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"IUser": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"age": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"username",
+				"name",
+				"age"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ICreateUserDto": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"age": {
+					"type": "number",
+					"format": "double"
+				},
+				"password": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"name",
+				"age",
+				"password"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "ts-node-boilerplate",
+		"version": "0.1.0",
+		"description": "boilerplate of ts-node sample project",
+		"license": {
+			"name": "GNU 3"
+		}
+	},
+	"paths": {
+		"/api/v1/user": {
+			"get": {
+				"operationId": "GetAll",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/IUser"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ICreateUserDto"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/user/{id}": {
+			"get": {
+				"operationId": "Get",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}

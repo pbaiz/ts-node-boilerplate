@@ -60,7 +60,7 @@
 		}
 	},
 	"paths": {
-		"/api/v1/user": {
+		"/v1/user": {
 			"get": {
 				"operationId": "GetAll",
 				"produces": [
@@ -106,7 +106,7 @@
 				]
 			}
 		},
-		"/api/v1/user/{id}": {
+		"/v1/user/{id}": {
 			"get": {
 				"operationId": "Get",
 				"produces": [
@@ -167,5 +167,20 @@
 		"application/json"
 	],
 	"swagger": "2.0",
-	"securityDefinitions": {}
+	"securityDefinitions": {
+		"api_key": {
+			"type": "apiKey",
+			"name": "access_token",
+			"in": "query"
+		},
+		"tsoa_auth": {
+			"type": "oauth2",
+			"authorizationUrl": "http://swagger.io/api/oauth/dialog",
+			"flow": "implicit",
+			"scopes": {
+				"write:pets": "modify things",
+				"read:pets": "read things"
+			}
+		}
+	}
 }

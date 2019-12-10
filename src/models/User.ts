@@ -1,17 +1,18 @@
-import { Document, Schema, Model, model } from 'mongoose'
+import {Document, Schema, Model, model} from 'mongoose'
 import * as crypto from 'crypto'
 
 const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
 
-export interface IUser{
+export interface IUser {
     username: string,
     name: string,
     age: number
 };
 
-interface IUserDocument extends IUser, Document{ 
+interface IUserDocument extends IUser, Document {
     password: string,
     hashedPassword: string,
+
     checkPassword(password: string): boolean
 };
 
@@ -26,7 +27,7 @@ const UserSchema = new Schema({
     },
     name: String,
     age: Number
-}, {    
+}, {
     timestamps: true,
     toJSON: {
         transform: (doc, ret, options) => {
@@ -50,28 +51,28 @@ const UserSchema = new Schema({
 // });
 
 UserSchema.methods.encryptPassword = function (password) {
-	return crypto
-		.createHmac('sha1', SALT)
-		.update(password)
-		.digest('hex');
-	// more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
+    return crypto
+        .createHmac('sha1', SALT)
+        .update(password)
+        .digest('hex');
+    // more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
 };
 
 UserSchema.virtual('password')
-	.set(function (password: string) {
-		this._plainPassword = password;
-		// more secure - this.salt = crypto.randomBytes(128).toString('hex');
-		this.hashedPassword = this.encryptPassword(password);
-	})
-	.get(function (): string {
-		return this._plainPassword;
+    .set(function (password: string) {
+        this._plainPassword = password;
+        // more secure - this.salt = crypto.randomBytes(128).toString('hex');
+        this.hashedPassword = this.encryptPassword(password);
+    })
+    .get(function (): string {
+        return this._plainPassword;
     });
 
 UserSchema.methods.checkPassword = function (password: string): boolean {
-	return this.encryptPassword(password) === this.hashedPassword;
+    return this.encryptPassword(password) === this.hashedPassword;
 };
 
-UserSchema.pre<IUserDocument>("save", function(next) {
+UserSchema.pre<IUserDocument>("save", function (next) {
     // this.hashedPassword = encryptPassword(this.password);
     next();
 });
@@ -91,22 +92,21 @@ UserSchema.pre<IUserDocument>("save", function(next) {
 //       }) ;
 
 
-
 //       export interface IUser extends Document {
 //         usernname: string,
 //         password: string
 //       }
-      
+
 //       const usersSchema = new Schema({
 //         username: String,
 //         password: String,
 //       });
-      
+
 //       UserSchema.pre<IUserDocument>("save", function(next) {
 //         this.password
 //         next();
 //       });
-    
+
 
 // export var UserInterface: UserInterface;
 

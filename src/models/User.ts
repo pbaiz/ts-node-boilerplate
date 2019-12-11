@@ -1,20 +1,24 @@
 import {Document, Schema, Model, model} from 'mongoose'
 import * as crypto from 'crypto'
 
-const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
+export const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
 
 export interface IUser {
     username: string,
     name: string,
     age: number
-};
+}
+
+export interface ICreateUserDto extends IUser {
+    password: string
+}
 
 interface IUserDocument extends IUser, Document {
     password: string,
     hashedPassword: string,
 
     checkPassword(password: string): boolean
-};
+}
 
 const UserSchema = new Schema({
     hashedPassword: String,

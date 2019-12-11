@@ -4,7 +4,7 @@
   "description": "boilerplate of ts-node sample project",
   "main": "server.ts",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "tsoa swagger-and-routes && nodemon src/server.ts",
     "debug": "nodemon --exec node --inspect=0.0.0.0:9229 --require ts-node/register src/server.ts",
     "generate": "tsoa swagger-and-routes",
     "test": "echo \"Error: no test specified\" && exit 1"

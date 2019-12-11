@@ -49,6 +49,38 @@
 			],
 			"type": "object",
 			"additionalProperties": true
+		},
+		"IAuthenticationResponse": {
+			"properties": {
+				"token": {
+					"type": "string"
+				},
+				"user": {
+					"$ref": "#/definitions/IUser"
+				}
+			},
+			"required": [
+				"token",
+				"user"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ILogin": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"password"
+			],
+			"type": "object",
+			"additionalProperties": true
 		}
 	},
 	"info": {
@@ -60,7 +92,7 @@
 		}
 	},
 	"paths": {
-		"/v1/user": {
+		"/api/v1/user": {
 			"get": {
 				"operationId": "GetAll",
 				"produces": [
@@ -77,7 +109,11 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": []
 			},
 			"post": {
@@ -106,7 +142,7 @@
 				]
 			}
 		},
-		"/v1/user/{id}": {
+		"/api/v1/user/{id}": {
 			"get": {
 				"operationId": "Get",
 				"produces": [
@@ -157,6 +193,60 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/definitions/IUser"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/authentication/signin": {
+			"post": {
+				"operationId": "Signin",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IAuthenticationResponse"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ICreateUserDto"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/authentication/login": {
+			"post": {
+				"operationId": "Login",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IAuthenticationResponse"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ILogin"
 						}
 					}
 				]

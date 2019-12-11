@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
-import {User, IUser} from '../models/User';
+import {User, IUser, SALT} from '../models/User';
 
 export function expressAuthentication(request: express.Request, securityName: string, scopes?: string[]): Promise<any> {
     if (securityName === 'api_token') {
@@ -20,13 +20,14 @@ export function expressAuthentication(request: express.Request, securityName: st
     }
 
     if (securityName === 'jwt') {
-        const token = request.body.token || request.query.token || request.headers['x-access-token'];
+        let token = request.headers.authorization;
 
         return new Promise((resolve, reject) => {
             if (!token) {
                 reject(new Error("No token provided"))
             }
-            jwt.verify(token, "[secret]", function (err: any, decoded: any) {
+            token = token.replace("Bearer ", "");
+            jwt.verify(token, SALT, function (err: any, decoded: any) {
                 if (err) {
                     reject(err)
                 } else {

@@ -65,3 +65,5 @@ typings/
 
 # Visual Studio Code
 .vscode
+
+package-lock.json

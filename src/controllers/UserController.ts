@@ -1,19 +1,16 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
-import {User, IUser} from '../models/User';
+import {User, IUser, ICreateUserDto} from '../models/User';
 import * as express from 'express';
-
-interface ICreateUserDto extends IUser {
-    password: string
-};
 
 export interface ErrorResponseModel {
     status: number;
     message: string;
 }
 
-@Route('v1/user/')
+@Route('api/v1/user/')
 export class UserController extends Controller {
 
+    @Security('jwt')
     @Get()
     public async getAll(): Promise<IUser[]> {
         try {
@@ -34,7 +31,7 @@ export class UserController extends Controller {
                 const errorResponseModel: ErrorResponseModel = {
                     message: 'User not found!',
                     status: 404
-                }
+                };
                 request.res.status(404).send(errorResponseModel).end();
             }
         }

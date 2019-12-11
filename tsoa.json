@@ -3,7 +3,8 @@
         "entryFile": "./src/app.ts",
         "outputDirectory": ".",
         "controllerPathGlobs": [
-            "./src/controllers/UserController.ts"
+            "./src/controllers/UserController.ts",
+            "./src/controllers/AuthenticationController.ts"
         ],
       "securityDefinitions": {
         "api_key": {
@@ -25,11 +26,11 @@
 	"routes": {
       "entryFile": "./src/app.ts",
       "routesDir": "./src",
-      "basePath": "/api/",
       "middleware": "express",
       "authenticationModule": "./src/middlewares/Authenticator.ts",
       "controllerPathGlobs": [
-        "./src/controllers/UserController.ts"
+        "./src/controllers/UserController.ts",
+        "./src/controllers/AuthenticationController.ts"
       ]
 	}
 }

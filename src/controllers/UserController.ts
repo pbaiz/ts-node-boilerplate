@@ -1,5 +1,6 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
 import {User, IUser, ICreateUserDto} from '../models/User';
+import {Types} from 'mongoose'
 import * as express from 'express';
 
 export interface ErrorResponseModel {
@@ -11,33 +12,41 @@ export interface ErrorResponseModel {
 export class UserController extends Controller {
 
     @Security('jwt')
+    @Get('me')
+    public async getMe(@Request() request): Promise<IUser> {
+        try {
+            const objectId = Types.ObjectId(request.user.id);
+            let user = await User.findById(objectId);
+            return user;
+        } catch (error) {
+            this.handleError(request, error);
+        }
+    }
+
+    @Security('jwt', ['admin'])
     @Get()
-    public async getAll(): Promise<IUser[]> {
+    public async getAll(@Request() request: express.Request): Promise<IUser[]> {
         try {
             return await User.find();
         } catch (error) {
-            console.error(error);
+            this.handleError(request, error);
         }
     }
 
+    @Security('jwt', ['admin'])
     @Get('{id}')
     public async get(id: string, @Request() request: express.Request): Promise<IUser> {
         try {
-            let user = await User.findById(id);
+            const objectId = Types.ObjectId(id);
+            let user = await User.findById(objectId);
+            if(!user) throw null;
             return user;
         } catch (error) {
-            console.error(error);
-            if (error.name === 'CastError') {
-                const errorResponseModel: ErrorResponseModel = {
-                    message: 'User not found!',
-                    status: 404
-                };
-                request.res.status(404).send(errorResponseModel).end();
-            }
+            this.handleError(request, error);
         }
     }
 
-    // @Response<Error>('default', 'Unexpected error')
+    @Security('jwt', ['admin'])
     @Post()
     public async create(@Body() body: ICreateUserDto, @Request() request: express.Request): Promise<IUser> {
         try {
@@ -45,24 +54,48 @@ export class UserController extends Controller {
         } catch (error) {
             console.error(error);
             if (error) {
-                if (error.name === 'MongoError' && error.code === 11000) {
-                    // const modal = {} as ErrorResponseModel;
-                    const errorResponseModel: ErrorResponseModel = {
-                        message: 'User already exist!',
-                        status: 422
-                    };
-                    request.res.status(422).send(errorResponseModel).end();
-                }
+                this.handleError(request, error);
             }
         }
     }
 
+    @Security('jwt', ['admin'])
     @Put('{id}')
-    public async update(id: string, @Body() body: IUser): Promise<IUser> {
+    public async update(id: string, @Body() body: IUser, @Request() request: express.Request): Promise<IUser> {
         try {
             return await User.findOneAndUpdate(id, body);
         } catch (error) {
-            console.error(error);
+            this.handleError(request, error);
+        }
+    }
+
+    @Security('jwt', ['admin'])
+    @Delete('{id}')
+    public async delete(id: string, @Body() body: IUser, @Request() request: express.Request): Promise<IUser> {
+        try {
+            return await User.findByIdAndRemove(id);
+        } catch (error) {
+            this.handleError(request, error);
+        }
+    }
+
+    private handleError(request: express.Request, error: any){
+        console.error(error);
+        if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
+            const errorResponseModel: ErrorResponseModel = {
+                message: 'User not found!',
+                status: 404
+            };
+            request.res.status(404).send(errorResponseModel).end();
+        } else if (error.name === 'MongoError' && error.code === 11000) {
+            // const modal = {} as ErrorResponseModel;
+            const errorResponseModel: ErrorResponseModel = {
+                message: 'User already exist!',
+                status: 422
+            };
+            request.res.status(422).send(errorResponseModel).end();
+        } else {
+            request.res.status(500).send().end();
         }
     }
 }

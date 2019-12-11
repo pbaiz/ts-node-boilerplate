@@ -1,7 +1,7 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken'
-import {User, IUser, ICreateUserDto, SALT} from '../models/User';
+import {User, IUser, ICreateUserDto, SALT, IJWTToken} from '../models/User';
 
 interface ILogin {
     username: string,
@@ -25,7 +25,11 @@ export class AuthenticationController extends Controller {
         }
 
         user = await User.create(body);
-        let token = await jwt.sign(user.id, SALT);
+        const jwtToken: IJWTToken = {
+            id: user.id,
+            roles: user.roles
+        };
+        let token = await jwt.sign(jwtToken, SALT);
 
         return {token, user};
     }
@@ -39,7 +43,11 @@ export class AuthenticationController extends Controller {
         }
         let validPassword = user.checkPassword(body.password);
         if(!validPassword) request.res.status(401).send().end();
-        let token = await jwt.sign(user.id, SALT);
+        const jwtToken: IJWTToken = {
+            id: user.id,
+            roles: user.roles
+        };
+        let token = await jwt.sign(jwtToken, SALT);
 
         return {token, user};
     }

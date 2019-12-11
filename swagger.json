@@ -9,18 +9,24 @@
 				"username": {
 					"type": "string"
 				},
-				"name": {
+				"roles": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"email": {
 					"type": "string"
 				},
-				"age": {
-					"type": "number",
-					"format": "double"
+				"name": {
+					"type": "string"
 				}
 			},
 			"required": [
 				"username",
-				"name",
-				"age"
+				"roles",
+				"email",
+				"name"
 			],
 			"type": "object",
 			"additionalProperties": true
@@ -30,12 +36,11 @@
 				"username": {
 					"type": "string"
 				},
-				"name": {
+				"email": {
 					"type": "string"
 				},
-				"age": {
-					"type": "number",
-					"format": "double"
+				"name": {
+					"type": "string"
 				},
 				"password": {
 					"type": "string"
@@ -43,8 +48,8 @@
 			},
 			"required": [
 				"username",
+				"email",
 				"name",
-				"age",
 				"password"
 			],
 			"type": "object",
@@ -92,6 +97,28 @@
 		}
 	},
 	"paths": {
+		"/api/v1/user/me": {
+			"get": {
+				"operationId": "GetMe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/api/v1/user": {
 			"get": {
 				"operationId": "GetAll",
@@ -111,7 +138,9 @@
 				},
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"admin"
+						]
 					}
 				],
 				"parameters": []
@@ -129,7 +158,13 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "body",
@@ -156,7 +191,13 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -179,7 +220,50 @@
 						}
 					}
 				},
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Delete",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -258,19 +342,11 @@
 	],
 	"swagger": "2.0",
 	"securityDefinitions": {
-		"api_key": {
+		"Bearer": {
+			"name": "Authorization",
+			"in": "header",
 			"type": "apiKey",
-			"name": "access_token",
-			"in": "query"
-		},
-		"tsoa_auth": {
-			"type": "oauth2",
-			"authorizationUrl": "http://swagger.io/api/oauth/dialog",
-			"flow": "implicit",
-			"scopes": {
-				"write:pets": "modify things",
-				"read:pets": "read things"
-			}
+			"description": "Please enter into field the word 'Bearer' following by space and JWT"
 		}
 	}
 }

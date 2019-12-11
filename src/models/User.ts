@@ -5,12 +5,21 @@ export const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e21
 
 export interface IUser {
     username: string,
-    name: string,
-    age: number
+    roles: string[]
+    email: string,
+    name: string
 }
 
-export interface ICreateUserDto extends IUser {
+export interface ICreateUserDto {
+    username: string,
+    email: string,
+    name: string,
     password: string
+}
+
+export interface IJWTToken {
+    id: string,
+    roles: string[]
 }
 
 interface IUserDocument extends IUser, Document {
@@ -29,8 +38,17 @@ const UserSchema = new Schema({
         unique: true,
         sparse: true
     },
+    email: {
+        type: String,
+        trim: true,
+        index: true,
+        unique: true,
+        sparse: true
+    },
     name: String,
-    age: Number
+    roles: [{
+        type: String, enum: ['admin'], trim: true
+    }],
 }, {
     timestamps: true,
     toJSON: {

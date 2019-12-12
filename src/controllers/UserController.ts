@@ -1,10 +1,11 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
 import {User, IUser, ICreateUserDto} from '../models/User';
 import {Types} from 'mongoose'
-import * as log4js from 'log4js'
 import * as express from 'express';
+import * as log4js from 'log4js'
+import {InternalServerError, ServerError} from "../utils";
 
-let logger = log4js.getLogger("UserController");
+const logger = log4js.getLogger("UserController");
 
 export interface ErrorResponseModel {
     status: number;
@@ -86,20 +87,21 @@ export class UserController extends Controller {
         console.error(error);
         logger.error(error);
         if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
-            const errorResponseModel: ErrorResponseModel = {
-                message: 'User not found!',
-                status: 404
-            };
-            request.res.status(404).send(errorResponseModel).end();
+            let errorName = 'user_not_found';
+            let internalErrors = [new InternalServerError(1100, errorName, '', error)];
+            throw new ServerError(404, internalErrors);
+            // request.res.status(404).send(errorResponseModel).end();
         } else if (error.name === 'MongoError' && error.code === 11000) {
             // const modal = {} as ErrorResponseModel;
             const errorResponseModel: ErrorResponseModel = {
-                message: 'User already exist!',
+                message: 'user_already_exist',
                 status: 422
             };
             request.res.status(422).send(errorResponseModel).end();
         } else {
-            request.res.status(500).send().end();
+            // throw new ServerError('this is a error', 500, ErrorType.Unknown);
+            // throw new ServerError('this is a message', HttpStatusCode.NotFound, ErrorType.Unknown)
+            // request.res.status(500).send().end();
         }
     }
 }

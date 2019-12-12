@@ -5,6 +5,7 @@ import * as swaggerUi from 'swagger-ui-express'
 import * as log4js from 'log4js'
 import {RegisterRoutes} from './routes'
 import {User} from "./models/User";
+import {ServerError} from "./utils";
 
 const MONGO_URI = `mongodb://localhost:27017/ts-node-bp`;
 const DEVELOPMENT_ENV = `development`;
@@ -29,6 +30,8 @@ class App {
 
         RegisterRoutes(this.express);
 
+        this.defineErrorResponseFormat();
+
         const swaggerDocument = require('../swagger.json');
         this.express.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -42,6 +45,17 @@ class App {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    private defineErrorResponseFormat() {
+        this.express.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+            const body: ServerError = {
+                status: err.status || 500,
+                internalServerErrors: err.internalServerErrors
+            };
+            res.status(body.status).json(body);
+            next();
+        });
     }
 
     private async createAdminUser() {

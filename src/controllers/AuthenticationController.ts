@@ -1,7 +1,10 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken'
+import * as log4js from 'log4js'
 import {User, IUser, ICreateUserDto, SALT, IJWTToken} from '../models/User';
+
+const logger = log4js.getLogger("AuthenticationController");
 
 interface ILogin {
     username: string,
@@ -21,6 +24,7 @@ export class AuthenticationController extends Controller {
         let user = await User.findOne({username: body.username});
         if (user) {
             request.res.status(401).send().end();
+            logger.info(`signin - user already created: ${body.username}`);
             return null;
         }
 
@@ -39,6 +43,7 @@ export class AuthenticationController extends Controller {
         let user = await User.findOne({username: body.username});
         if (!user) {
             request.res.status(401).send().end();
+            logger.info(`login - bad login: ${body.username}`);
             return null;
         }
         let validPassword = user.checkPassword(body.password);

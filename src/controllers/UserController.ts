@@ -1,7 +1,10 @@
 import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
 import {User, IUser, ICreateUserDto} from '../models/User';
 import {Types} from 'mongoose'
+import * as log4js from 'log4js'
 import * as express from 'express';
+
+let logger = log4js.getLogger("UserController");
 
 export interface ErrorResponseModel {
     status: number;
@@ -81,6 +84,7 @@ export class UserController extends Controller {
 
     private handleError(request: express.Request, error: any){
         console.error(error);
+        logger.error(error);
         if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
             const errorResponseModel: ErrorResponseModel = {
                 message: 'User not found!',

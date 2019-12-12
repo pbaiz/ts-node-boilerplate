@@ -2,21 +2,28 @@ import * as express from 'express';
 import * as cors from 'cors'
 import * as mongoose from 'mongoose'
 import * as swaggerUi from 'swagger-ui-express'
+import * as log4js from 'log4js'
 import {RegisterRoutes} from './routes'
-import {User, ICreateUserDto} from "./models/User";
+import {User} from "./models/User";
 
 const MONGO_URI = `mongodb://localhost:27017/ts-node-bp`;
 const DEVELOPMENT_ENV = `development`;
 
 process.env.NODE_ENV = process.env.NODE_ENV || DEVELOPMENT_ENV;
+log4js.configure('./log4js.json');
 
 class App {
     public express: express.Express;
 
     public constructor() {
+        let logger = log4js.getLogger("App");
         this.express = express();
+
+        this.express.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
         this.express.use(express.json());
         this.express.use(cors());
+
+        logger.info("server started");
 
         this.connectToMongo(MONGO_URI);
 

@@ -27,11 +27,11 @@ export class InternalServerError {
         public readonly code: number,
         public readonly name: string,
         public readonly message: string,
-        public readonly stack: any
+        public readonly stackTrace: any
     ) {
         this.code = code;
         this.name = name;
         this.message = message;
-        this.stack = stack;
+        this.stackTrace = stackTrace;
     }
 }

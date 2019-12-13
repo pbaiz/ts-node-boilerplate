@@ -87,8 +87,8 @@ export class UserController extends Controller {
         console.error(error);
         logger.error(error);
         if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
-            let errorName = 'user_not_found';
-            let internalErrors = [new InternalServerError(1100, errorName, '', error)];
+            let errorName = 'UserNotFound';
+            let internalErrors = [new InternalServerError(1100, errorName, error.message, error.stack)];
             throw new ServerError(404, internalErrors);
             // request.res.status(404).send(errorResponseModel).end();
         } else if (error.name === 'MongoError' && error.code === 11000) {

@@ -1,16 +1,12 @@
-import {Controller, Route, Request, Response, Get, Post, Put, Delete, Security, Body} from 'tsoa'
-import {User, IUser, ICreateUserDto} from '../models/User';
+import {Body, Controller, Delete, Get, Post, Put, Query, Request, Route, Security} from 'tsoa'
+import {ICreateUserDto, ISearchAndFilter, IUser, User} from '../models/User';
 import {Types} from 'mongoose'
 import * as express from 'express';
 import * as log4js from 'log4js'
-import {InternalServerError, ServerError} from "../utils";
+import {filterByKeys, ServerError} from "../utils";
+import {IPaginateResult} from "../interfaces/miscInterfaces";
 
 const logger = log4js.getLogger("UserController");
-
-export interface ErrorResponseModel {
-    status: number;
-    message: string;
-}
 
 @Route('api/v1/user/')
 export class UserController extends Controller {
@@ -20,20 +16,54 @@ export class UserController extends Controller {
     public async getMe(@Request() request): Promise<IUser> {
         try {
             const objectId = Types.ObjectId(request.user.id);
-            let user = await User.findById(objectId);
-            return user;
+            return await User.findById(objectId);
         } catch (error) {
-            this.handleError(request, error);
+            this.handleError(error);
         }
     }
 
     @Security('jwt', ['admin'])
     @Get()
-    public async getAll(@Request() request: express.Request): Promise<IUser[]> {
+    public async getAll(@Query() page: number = 1, @Query() limit: number = 10, @Query() sortAsc: boolean = true,
+                        @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
         try {
-            return await User.find();
+            const sort = {};
+            sort[fieldSort] = sortAsc ? 1: -1;
+
+            return await User.paginate({}, {
+                page: page,
+                limit: limit,
+                sort: sort,
+            });
         } catch (error) {
-            this.handleError(request, error);
+            this.handleError(error);
+        }
+    }
+
+    @Security('jwt', ['admin'])
+    @Post('search')
+    public async search(@Body() body: any, @Query() page: number = 1,
+                        @Query() limit: number = 10,  @Query() sortAsc: boolean = true,
+                        @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
+        try {
+            return await User.paginate(body, {page: page, limit: limit});
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    @Security('jwt', ['admin'])
+    @Post('filter')
+    public async filter(@Body() body: ISearchAndFilter, @Query() page: number = 1,
+                        @Query() limit: number = 10,  @Query() sortAsc: boolean = true,
+                        @Query() fieldSort: string = '_id'): Promise<any> {
+        try {
+            let paginated: any = await User.paginate(body.search, {page: page, limit: limit});
+            paginated.docs = paginated.docs.map(d=> filterByKeys(d, body.search));
+
+            return paginated;
+        } catch (error) {
+            this.handleError(error);
         }
     }
 
@@ -43,10 +73,10 @@ export class UserController extends Controller {
         try {
             const objectId = Types.ObjectId(id);
             let user = await User.findById(objectId);
-            if(!user) throw null;
+            if(!user) this.handleError(null);
             return user;
         } catch (error) {
-            this.handleError(request, error);
+            this.handleError(error);
         }
     }
 
@@ -58,7 +88,7 @@ export class UserController extends Controller {
         } catch (error) {
             console.error(error);
             if (error) {
-                this.handleError(request, error);
+                this.handleError(error);
             }
         }
     }
@@ -69,7 +99,7 @@ export class UserController extends Controller {
         try {
             return await User.findOneAndUpdate(id, body);
         } catch (error) {
-            this.handleError(request, error);
+            this.handleError(error);
         }
     }
 
@@ -79,29 +109,19 @@ export class UserController extends Controller {
         try {
             return await User.findByIdAndRemove(id);
         } catch (error) {
-            this.handleError(request, error);
+            this.handleError(error);
         }
     }
 
-    private handleError(request: express.Request, error: any){
+    private handleError(error: any){
         console.error(error);
         logger.error(error);
         if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
-            let errorName = 'UserNotFound';
-            let internalErrors = [new InternalServerError(1100, errorName, error.message, error.stack)];
-            throw new ServerError(404, internalErrors);
-            // request.res.status(404).send(errorResponseModel).end();
+            throw new ServerError(404);
         } else if (error.name === 'MongoError' && error.code === 11000) {
-            // const modal = {} as ErrorResponseModel;
-            const errorResponseModel: ErrorResponseModel = {
-                message: 'user_already_exist',
-                status: 422
-            };
-            request.res.status(422).send(errorResponseModel).end();
+            throw new ServerError(409);
         } else {
-            // throw new ServerError('this is a error', 500, ErrorType.Unknown);
-            // throw new ServerError('this is a message', HttpStatusCode.NotFound, ErrorType.Unknown)
-            // request.res.status(500).send().end();
+            throw new ServerError(error.message, error.stack);
         }
     }
 }

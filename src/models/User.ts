@@ -1,11 +1,17 @@
 import {Document, Schema, Model, model} from 'mongoose'
 import * as crypto from 'crypto'
+import * as mongoosePaginate from 'mongoose-paginate'
 
 export const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
 
+export interface ISearchAndFilter {
+    search: any,
+    body: any
+}
+
 export interface IUser {
     username: string,
-    roles: string[]
+    roles: string[],
     email: string,
     name: string
 }
@@ -59,6 +65,8 @@ const UserSchema = new Schema({
         virtuals: false,
     }
 });
+
+UserSchema.plugin(mongoosePaginate);
 
 //  function encryptPassword(password: string): string {
 // 	return crypto

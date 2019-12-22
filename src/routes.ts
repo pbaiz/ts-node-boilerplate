@@ -23,6 +23,28 @@ const models: TsoaRoute.Models = {
         "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPaginateResultIUser": {
+        "dataType": "refObject",
+        "properties": {
+            "docs": { "dataType": "array", "array": { "ref": "IUser" }, "required": true },
+            "total": { "dataType": "double", "required": true },
+            "limit": { "dataType": "double", "required": true },
+            "page": { "dataType": "double" },
+            "pages": { "dataType": "double" },
+            "offset": { "dataType": "double" },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ISearchAndFilter": {
+        "dataType": "refObject",
+        "properties": {
+            "search": { "dataType": "any", "required": true },
+            "body": { "dataType": "any", "required": true },
+        },
+        "additionalProperties": true,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ICreateUserDto": {
         "dataType": "refObject",
         "properties": {
@@ -89,7 +111,10 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
+                limit: { "default": 10, "in": "query", "name": "limit", "dataType": "double" },
+                sortAsc: { "default": true, "in": "query", "name": "sortAsc", "dataType": "boolean" },
+                fieldSort: { "default": "_id", "in": "query", "name": "fieldSort", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -105,6 +130,60 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/user/search',
+        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                body: { "in": "body", "name": "body", "required": true, "dataType": "any" },
+                page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
+                limit: { "default": 10, "in": "query", "name": "limit", "dataType": "double" },
+                sortAsc: { "default": true, "in": "query", "name": "sortAsc", "dataType": "boolean" },
+                fieldSort: { "default": "_id", "in": "query", "name": "fieldSort", "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new UserController();
+
+
+            const promise = controller.search.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/user/filter',
+        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                body: { "in": "body", "name": "body", "required": true, "ref": "ISearchAndFilter" },
+                page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
+                limit: { "default": 10, "in": "query", "name": "limit", "dataType": "double" },
+                sortAsc: { "default": true, "in": "query", "name": "sortAsc", "dataType": "boolean" },
+                fieldSort: { "default": "_id", "in": "query", "name": "fieldSort", "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new UserController();
+
+
+            const promise = controller.filter.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -206,7 +285,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/authentication/signin',
+    app.post('/api/v1/authentication/signup',
         function(request: any, response: any, next: any) {
             const args = {
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateUserDto" },
@@ -225,7 +304,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new AuthenticationController();
 
 
-            const promise = controller.signin.apply(controller, validatedArgs as any);
+            const promise = controller.signup.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

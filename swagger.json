@@ -31,6 +31,64 @@
 			"type": "object",
 			"additionalProperties": true
 		},
+		"IPaginateResultIUser": {
+			"properties": {
+				"docs": {
+					"items": {
+						"$ref": "#/definitions/IUser"
+					},
+					"type": "array"
+				},
+				"total": {
+					"type": "number",
+					"format": "double"
+				},
+				"limit": {
+					"type": "number",
+					"format": "double"
+				},
+				"page": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				},
+				"pages": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				},
+				"offset": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"docs",
+				"total",
+				"limit"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ISearchAndFilter": {
+			"properties": {
+				"search": {
+					"additionalProperties": true,
+					"type": "object"
+				},
+				"body": {
+					"additionalProperties": true,
+					"type": "object"
+				}
+			},
+			"required": [
+				"search",
+				"body"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
 		"ICreateUserDto": {
 			"properties": {
 				"username": {
@@ -129,10 +187,7 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"items": {
-								"$ref": "#/definitions/IUser"
-							},
-							"type": "array"
+							"$ref": "#/definitions/IPaginateResultIUser"
 						}
 					}
 				},
@@ -143,7 +198,38 @@
 						]
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"default": 1,
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": 10,
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": true,
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"type": "boolean"
+					},
+					{
+						"default": "_id",
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "Create",
@@ -173,6 +259,133 @@
 						"schema": {
 							"$ref": "#/definitions/ICreateUserDto"
 						}
+					}
+				]
+			}
+		},
+		"/api/v1/user/search": {
+			"post": {
+				"operationId": "Search",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IPaginateResultIUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"type": "object"
+						}
+					},
+					{
+						"default": 1,
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": 10,
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": true,
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"type": "boolean"
+					},
+					{
+						"default": "_id",
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/api/v1/user/filter": {
+			"post": {
+				"operationId": "Filter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ISearchAndFilter"
+						}
+					},
+					{
+						"default": 1,
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": 10,
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": true,
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"type": "boolean"
+					},
+					{
+						"default": "_id",
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"type": "string"
 					}
 				]
 			}
@@ -282,9 +495,9 @@
 				]
 			}
 		},
-		"/api/v1/authentication/signin": {
+		"/api/v1/authentication/signup": {
 			"post": {
-				"operationId": "Signin",
+				"operationId": "Signup",
 				"produces": [
 					"application/json"
 				],

@@ -1,7 +1,7 @@
 {
-	"compilerOptions": {
-		"target": "esnext",
-		"moduleResolution": "node",
-		"experimentalDecorators": true
-	}
+  "compilerOptions": {
+    "target": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true
+  }
 }

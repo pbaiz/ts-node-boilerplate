@@ -14,17 +14,18 @@ process.env.NODE_ENV = process.env.NODE_ENV || DEVELOPMENT_ENV;
 log4js.configure('./log4js.json');
 
 class App {
+    private logger = log4js.getLogger("App");
     public express: express.Express;
 
     public constructor() {
-        let logger = log4js.getLogger("App");
+
         this.express = express();
 
-        this.express.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
+        this.express.use(log4js.connectLogger(log4js.getLogger("http"), {level: 'auto'}));
         this.express.use(express.json());
         this.express.use(cors());
 
-        logger.info("server started");
+        this.logger.info("server started");
 
         this.connectToMongo(MONGO_URI);
 
@@ -33,17 +34,22 @@ class App {
         this.defineErrorResponseFormat();
 
         const swaggerDocument = require('../swagger.json');
-        this.express.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        this.express.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-        if(process.env.NODE_ENV == DEVELOPMENT_ENV) this.createAdminUser();
+        if (process.env.NODE_ENV == DEVELOPMENT_ENV) this.createAdminUser();
     }
 
     private async connectToMongo(uri: string) {
         try {
-            await mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+            await mongoose.connect(uri, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+            });
             console.info('MongoDB Connected');
         } catch (error) {
             console.error(error);
+            this.logger.info("server started");
         }
     }
 

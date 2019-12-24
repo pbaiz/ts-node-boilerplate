@@ -3,7 +3,7 @@ import {ICreateUserDto, ISearchAndFilter, IUser, User} from '../models/User';
 import {Types} from 'mongoose'
 import * as express from 'express';
 import * as log4js from 'log4js'
-import {filterByKeys, ServerError} from "../utils";
+import {ServerError} from "../utils";
 import {IPaginateResult} from "../interfaces/miscInterfaces";
 
 const logger = log4js.getLogger("UserController");
@@ -26,42 +26,16 @@ export class UserController extends Controller {
     @Get()
     public async getAll(@Query() page: number = 1, @Query() limit: number = 10, @Query() sortAsc: boolean = true,
                         @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
-        try {
-            const sort = {};
-            sort[fieldSort] = sortAsc ? 1: -1;
-
-            return await User.paginate({}, {
-                page: page,
-                limit: limit,
-                sort: sort,
-            });
-        } catch (error) {
-            this.handleError(error);
-        }
-    }
-
-    @Security('jwt', ['admin'])
-    @Post('search')
-    public async search(@Body() body: any, @Query() page: number = 1,
-                        @Query() limit: number = 10,  @Query() sortAsc: boolean = true,
-                        @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
-        try {
-            return await User.paginate(body, {page: page, limit: limit});
-        } catch (error) {
-            this.handleError(error);
-        }
+        return this.paginate(page, limit, sortAsc, fieldSort);
     }
 
     @Security('jwt', ['admin'])
     @Post('filter')
     public async filter(@Body() body: ISearchAndFilter, @Query() page: number = 1,
-                        @Query() limit: number = 10,  @Query() sortAsc: boolean = true,
-                        @Query() fieldSort: string = '_id'): Promise<any> {
+                        @Query() limit: number = 10, @Query() sortAsc: boolean = true,
+                        @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
         try {
-            let paginated: any = await User.paginate(body.search, {page: page, limit: limit});
-            paginated.docs = paginated.docs.map(d=> filterByKeys(d, body.search));
-
-            return paginated;
+            return this.paginate(page, limit, sortAsc, fieldSort, body);
         } catch (error) {
             this.handleError(error);
         }
@@ -73,7 +47,7 @@ export class UserController extends Controller {
         try {
             const objectId = Types.ObjectId(id);
             let user = await User.findById(objectId);
-            if(!user) this.handleError(null);
+            if (!user) this.handleError(null);
             return user;
         } catch (error) {
             this.handleError(error);
@@ -113,10 +87,28 @@ export class UserController extends Controller {
         }
     }
 
-    private handleError(error: any){
+    public async paginate(page: number = 1, limit: number = 10, sortAsc: boolean = true, fieldSort: string = '_id',
+                          searchAndFilter: ISearchAndFilter = {query: {}, filter: {}})
+        : Promise<IPaginateResult<IUser>> {
+        const sort = {};
+        sort[fieldSort] = sortAsc ? 1 : -1;
+        try {
+            return await User.paginate(searchAndFilter.query, {
+                page: page,
+                limit: limit,
+                sort: sort,
+                select: searchAndFilter.filter
+            });
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    private handleError(error: any) {
         console.error(error);
         logger.error(error);
-        if (!error || error.message == 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters') {
+        const invalidId = 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters';
+        if (!error || error.message == invalidId) {
             throw new ServerError(404);
         } else if (error.name === 'MongoError' && error.code === 11000) {
             throw new ServerError(409);

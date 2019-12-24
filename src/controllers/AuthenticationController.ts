@@ -50,7 +50,7 @@ export class AuthenticationController extends Controller {
                 return null;
             }
             let validPassword = user.checkPassword(body.password);
-            if(!validPassword) request.res.status(401).send().end();
+            if (!validPassword) request.res.status(401).send().end();
             const jwtToken: IJWTToken = {
                 id: user.id,
                 roles: user.roles
@@ -63,7 +63,7 @@ export class AuthenticationController extends Controller {
         }
     }
 
-    private handleError(error: any){
+    private handleError(error: any) {
         console.error(error);
         logger.error(error);
         if (!error) {

@@ -5,15 +5,16 @@ import * as mongoosePaginate from 'mongoose-paginate'
 export const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
 
 export interface ISearchAndFilter {
-    search: any,
-    body: any
+    query?: any,
+    filter?: any
 }
 
 export interface IUser {
     username: string,
     roles: string[],
     email: string,
-    name: string
+    name: string,
+    active: true
 }
 
 export interface ICreateUserDto {
@@ -55,6 +56,10 @@ const UserSchema = new Schema({
     roles: [{
         type: String, enum: ['admin'], trim: true
     }],
+    active: {
+        type: Boolean,
+        default: true
+    },
 }, {
     timestamps: true,
     toJSON: {

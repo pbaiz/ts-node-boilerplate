@@ -1,6 +1,13 @@
-export interface IErrorResponseModel {
-    status: number;
-    message: string;
+import {IUser} from "../models/User";
+
+export interface ILogin {
+    username: string,
+    password: string
+}
+
+export interface IAuthenticationResponse {
+    token: string,
+    user: IUser
 }
 
 export interface IPaginateResult<T> {

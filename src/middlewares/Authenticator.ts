@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
-import {User, IUser, IJWTToken, SALT} from '../models/User';
+import {IJWTToken, SALT} from '../models/User';
 
 export function expressAuthentication(request: express.Request, securityName: string, scopes?: string[]): Promise<any> {
     if (securityName === 'api_token') {

@@ -1,4 +1,4 @@
-import {Document, Schema, Model, model} from 'mongoose'
+import {Document, model, Schema} from 'mongoose'
 import * as crypto from 'crypto'
 import * as mongoosePaginate from 'mongoose-paginate'
 

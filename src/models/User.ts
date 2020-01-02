@@ -9,19 +9,31 @@ export interface ISearchAndFilter {
     filter?: any
 }
 
-export interface IUser {
+interface IUserAbstraction {
     username: string,
     roles: string[],
     email: string,
     name: string,
-    active: true
+    active: boolean
 }
 
-export interface ICreateUserDto {
+export interface IUser extends IUserAbstraction{
+    _id: string
+}
+
+export interface IUserCreateDto {
     username: string,
     email: string,
     name: string,
     password: string
+}
+
+export interface IUserUpdateDto {
+    username: string,
+    roles: string[],
+    email: string,
+    name: string,
+    active: boolean
 }
 
 export interface IJWTToken {
@@ -29,7 +41,7 @@ export interface IJWTToken {
     roles: string[]
 }
 
-interface IUserDocument extends IUser, Document {
+interface IUserDocument extends IUserAbstraction, Document {
     password: string,
     hashedPassword: string,
 

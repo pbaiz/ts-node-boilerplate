@@ -1,7 +1,7 @@
-import {ICreateUserDto, ISearchAndFilter, IUser, User} from "../models/User";
+import {IUserCreateDto, ISearchAndFilter, IUser, User} from "../models/User";
 import {Types} from "mongoose";
 import {IPaginateResult} from "../interfaces/miscInterfaces";
-import {ServerError} from "../utils";
+import {InternalServerError, ServerError} from "../utils";
 import * as log4js from "log4js";
 
 export class UserService {
@@ -27,7 +27,7 @@ export class UserService {
         }
     }
 
-    public async create(body: ICreateUserDto): Promise<IUser> {
+    public async create(body: IUserCreateDto): Promise<IUser> {
         try {
             return await User.create(body);
         } catch (error) {
@@ -83,7 +83,13 @@ export class UserService {
         } else if (error.name === 'MongoError' && error.code === 11000) {
             throw new ServerError(409);
         } else {
-            throw new ServerError(error.message, error.stack);
+            // throw new ServerError();
+            throw new ServerError( 500,[new InternalServerError(error.message, error.stack)]);
+            // let serverError: ServerError = {
+            //     status: 500,
+            //     internalServerErrors: [new InternalServerError(error.message, error.stack)]
+            // };
+            // throw serverError;
         }
     }
 }

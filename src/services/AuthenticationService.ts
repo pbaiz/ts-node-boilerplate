@@ -1,13 +1,13 @@
 import * as jwt from 'jsonwebtoken'
 import * as log4js from 'log4js'
-import {ICreateUserDto, IJWTToken, SALT, User} from '../models/User';
+import {IUserCreateDto, IJWTToken, SALT, User} from '../models/User';
 import {ServerError} from "../utils";
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 
 export class AuthenticationService {
     private logger = log4js.getLogger("AuthenticationService");
 
-    public async signup(body: ICreateUserDto)
+    public async signup(body: IUserCreateDto)
         : Promise<IAuthenticationResponse> {
         try {
             let user = await User.findOne({username: body.username});

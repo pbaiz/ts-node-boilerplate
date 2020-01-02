@@ -1,21 +1,35 @@
 import app, {MONGO_URI, SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
 import * as mongoose from 'mongoose'
-import {ICreateUserDto, IUser, User} from "../src/models/User";
+import {IUserCreateDto, IUser, User} from "../src/models/User";
 import * as request from "supertest";
 import {Response} from "superagent";
-import {IAuthenticationResponse, ILogin} from "../src/interfaces/miscInterfaces";
+import {IAuthenticationResponse, ILogin, IPaginateResult} from "../src/interfaces/miscInterfaces";
 
-const user: ICreateUserDto = {
+const user: IUserCreateDto = {
     username: 'user',
     password: 'user123',
     email: 'test@email.com',
     name: 'User'
 };
 
+const user2: IUserCreateDto = {
+    username: 'user2',
+    password: 'user123',
+    email: 'test2@email.com',
+    name: 'User'
+};
+
+const admin = {
+    name: 'Admin',
+    username: 'admin',
+    email: 'admin@email.com',
+    roles: ['admin'],
+    password: 'admin123'
+};
+
 process.env.NODE_ENV = TEST_ENV;
 
 beforeAll(async () => {
-
     let uri = `${MONGO_URI}/${SCHEMA_TEST_NAME}`;
     await mongoose.connect(uri, {
         useNewUrlParser: true,
@@ -34,9 +48,9 @@ afterEach(async () => {
 
 describe("Server Online", () => {
     it("Ping Server", async () => {
-        const result = await request(app).get("/ping");
-        expect(result.text).toEqual("pong");
-        expect(result.status).toEqual(200);
+        const response = await request(app).get("/ping");
+        expect(response.text).toEqual("pong");
+        expect(response.status).toEqual(200);
     });
 });
 
@@ -63,13 +77,80 @@ describe("Authentication", () => {
 describe("User", () => {
     it("GET / ME", async () => {
         let token = await getToken();
-        const result = await request(app)
+        const response = await request(app)
             .get("/api/v1/user/me")
             .set('Authorization', 'Bearer ' + token);
-        let body = result.body as IUser;
-        expect(result.status).toEqual(200);
+        let body = response.body as IUser;
+        expect(response.status).toEqual(200);
         expect(body).not.toBeNull();
         expect(body.username).toEqual(user.username);
+    });
+    it("POST / User", async () => {
+        let token = await getAdminToken();
+        const response = await request(app)
+            .post("/api/v1/user")
+            .set('Authorization', 'Bearer ' + token)
+            .send(user);
+        let body = response.body as IPaginateResult<IUser>;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
+    });
+    it("GET / User", async () => {
+        const userCreated = await createUser(user);
+        let token = await getAdminToken();
+        const response = await request(app)
+            .get(`/api/v1/user/${userCreated._id}`)
+            .set('Authorization', 'Bearer ' + token);
+        let body = response.body as IUser;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
+        expect(body.username).toEqual(user.username);
+    });
+    it("GET / All Users", async () => {
+        await createUser(user);
+        await createUser(user2);
+        let token = await getAdminToken();
+        const response = await request(app)
+            .get(`/api/v1/user`)
+            .set('Authorization', 'Bearer ' + token);
+        let body = response.body as IPaginateResult<IUser>;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
+        expect(body.docs.length).toBeGreaterThan(0);
+    });
+    it("GET / Filter Users", async () => {
+        await createUser(user);
+        await createUser(user2);
+        let token = await getAdminToken();
+        const response = await request(app)
+            .post(`/api/v1/user/filter`)
+            .set('Authorization', 'Bearer ' + token);
+        let body = response.body as IPaginateResult<IUser>;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
+        expect(body.docs.length).toBeGreaterThan(0);
+    });
+    it("DELETE / User", async () => {
+        const createdUser = await createUser(user);
+        let token = await getAdminToken();
+        const response = await request(app)
+            .delete(`/api/v1/user/${createdUser._id}`)
+            .set('Authorization', 'Bearer ' + token);
+        let body = response.body as IPaginateResult<IUser>;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
+    });
+    it("UPDATE / User", async () => {
+        const userCreated = await createUser(user);
+        userCreated.name = 'User Updated';
+        let token = await getAdminToken();
+        const response = await request(app)
+            .put(`/api/v1/user/${userCreated._id}`)
+            .set('Authorization', 'Bearer ' + token)
+            .send(userCreated);
+        let body = response.body as IPaginateResult<IUser>;
+        expect(response.status).toEqual(200);
+        expect(body).not.toBeNull();
     });
 });
 
@@ -82,16 +163,25 @@ async function getToken(): Promise<string> {
     return body.token;
 }
 
+async function getAdminToken(): Promise<string> {
+    await createAdminUser();
+    let response = await login(admin.username, admin.password);
+    expect(response.status).toEqual(200);
+    let body = response.body as IAuthenticationResponse;
+
+    return body.token;
+}
+
 async function signup(): Promise<Response> {
     return request(app)
         .post("/api/v1/authentication/signup")
         .send(user);
 }
 
-async function login(): Promise<Response> {
+async function login(username: string = user.username, password: string = user.password): Promise<Response> {
     let iLogin: ILogin = {
-        username: user.username,
-        password: user.password
+        username: username,
+        password: password
     };
     return request(app)
         .post("/api/v1/authentication/login")
@@ -101,6 +191,26 @@ async function login(): Promise<Response> {
 async function deleteAllUsers() {
     try {
         await User.deleteMany({});
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function createUser(userDto: IUserCreateDto): Promise<IUser> {
+    try {
+        const user = await User.findOne({username: userDto.username});
+        expect(user).toBeNull();
+        return await User.create(userDto);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function createAdminUser(): Promise<IUser> {
+    try {
+        const adminFound = await User.findOne({username: 'admin'});
+        if (adminFound) return adminFound;
+        return await User.create(admin);
     } catch (error) {
         console.error(error);
     }

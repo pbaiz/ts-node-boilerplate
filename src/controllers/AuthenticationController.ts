@@ -1,5 +1,5 @@
 import {Body, Controller, Post, Route} from 'tsoa'
-import {ICreateUserDto} from '../models/User';
+import {IUserCreateDto} from '../models/User';
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 import {AuthenticationService} from "../services/AuthenticationService";
 
@@ -7,7 +7,7 @@ import {AuthenticationService} from "../services/AuthenticationService";
 export class AuthenticationController extends Controller {
 
     @Post('signup')
-    public async signup(@Body() body: ICreateUserDto): Promise<IAuthenticationResponse> {
+    public async signup(@Body() body: IUserCreateDto): Promise<IAuthenticationResponse> {
         return await new AuthenticationService().signup(body);
     }
 

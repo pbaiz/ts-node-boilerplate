@@ -11,5 +11,6 @@ const serverOptions = {
 const server = http2.createServer(serverOptions, app);
 server.listen(port);
 server.on('listening', () => {
-    console.info(`ts-node-boilerplace listening on https://localhost:${port}`);
+    console.info(`ts-node-boilerplace on https://localhost:${port}`);
+    console.info(`ts-node-boilerplace api documentation on https://localhost:${port}/api/doc`);
 });

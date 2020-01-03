@@ -10,11 +10,6 @@ export class UserController extends Controller {
     @Security('jwt')
     @Get('me')
     public async getMe(@Request() request): Promise<IUser> {
-        try {
-
-        } catch (error) {
-            throw error;
-        }
         return await new UserService().getMe(request);
     }
 
@@ -22,11 +17,6 @@ export class UserController extends Controller {
     @Get()
     public async getAll(@Query() page: number = 1, @Query() limit: number = 10, @Query() sortAsc: boolean = true,
                         @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
-        try {
-
-        } catch (error) {
-            throw error;
-        }
         return await new UserService().paginate(page, limit, sortAsc, fieldSort);
     }
 
@@ -35,11 +25,6 @@ export class UserController extends Controller {
     public async filter(@Body() body: ISearchAndFilter, @Query() page: number = 1,
                         @Query() limit: number = 10, @Query() sortAsc: boolean = true,
                         @Query() fieldSort: string = '_id'): Promise<IPaginateResult<IUser>> {
-        try {
-
-        } catch (error) {
-            throw error;
-        }
         return await new UserService().paginate(page, limit, sortAsc, fieldSort, body);
     }
 
@@ -58,14 +43,7 @@ export class UserController extends Controller {
     @Security('jwt', ['admin'])
     @Put('{id}')
     public async update(id: string, @Body() body: IUserUpdateDto): Promise<IUser> {
-        // throw new ServerError(500);
         return await new UserService().update(id, body as IUser);
-        // try {
-        //     return await new UserService().update(id, body as IUser);
-        // } catch (error) {
-        //     throw error;
-        // }
-
     }
 
     @Security('jwt', ['admin'])

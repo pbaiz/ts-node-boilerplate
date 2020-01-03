@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 import * as log4js from 'log4js'
 import {IUserCreateDto, IJWTToken, SALT, User} from '../models/User';
-import {ServerError} from "../utils";
+import {InternalServerError, ServerError} from "../utils";
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 
 export class AuthenticationService {
@@ -51,6 +51,6 @@ export class AuthenticationService {
         console.error(error);
         this.logger.error(error);
         if (error instanceof ServerError) throw error;
-        throw new ServerError(error.message, error.stack);
+        throw new ServerError( 500,[new InternalServerError(error.message, error.stack)]);
     }
 }

@@ -40,7 +40,7 @@ export class UserService {
 
     public async update(id: string, body: IUser): Promise<IUser> {
         try {
-            return await User.findOneAndUpdate(id, body);
+            return await User.findOneAndUpdate(id, body, { new: true });
         } catch (error) {
             this.handleError(error);
         }
@@ -83,13 +83,7 @@ export class UserService {
         } else if (error.name === 'MongoError' && error.code === 11000) {
             throw new ServerError(409);
         } else {
-            // throw new ServerError();
             throw new ServerError( 500,[new InternalServerError(error.message, error.stack)]);
-            // let serverError: ServerError = {
-            //     status: 500,
-            //     internalServerErrors: [new InternalServerError(error.message, error.stack)]
-            // };
-            // throw serverError;
         }
     }
 }

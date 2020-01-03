@@ -136,21 +136,23 @@ describe("User", () => {
         const response = await request(app)
             .delete(`/api/v1/user/${createdUser._id}`)
             .set('Authorization', 'Bearer ' + token);
-        let body = response.body as IPaginateResult<IUser>;
+        let body = response.body;
         expect(response.status).toEqual(200);
         expect(body).not.toBeNull();
     });
     it("UPDATE / User", async () => {
         const userCreated = await createUser(user);
-        userCreated.name = 'User Updated';
+        let nameUpdated = 'User Updated';
+        userCreated.name = nameUpdated;
         let token = await getAdminToken();
         const response = await request(app)
             .put(`/api/v1/user/${userCreated._id}`)
             .set('Authorization', 'Bearer ' + token)
             .send(userCreated);
-        let body = response.body as IPaginateResult<IUser>;
+        let body = response.body as IUser;
         expect(response.status).toEqual(200);
         expect(body).not.toBeNull();
+        expect(body.name).toEqual(nameUpdated);
     });
 });
 

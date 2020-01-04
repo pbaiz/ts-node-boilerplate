@@ -1,4 +1,4 @@
-import app, {MONGO_URI, SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
+import app, {MONGO_URI, DB_SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
 import * as mongoose from 'mongoose'
 import {IUserCreateDto, IUser, User} from "../src/models/User";
 import * as request from "supertest";
@@ -30,7 +30,7 @@ const admin = {
 process.env.NODE_ENV = TEST_ENV;
 
 beforeAll(async () => {
-    let uri = `${MONGO_URI}/${SCHEMA_TEST_NAME}`;
+    let uri = `${MONGO_URI}/${DB_SCHEMA_TEST_NAME}`;
     await mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,

@@ -7,13 +7,17 @@ import {RegisterRoutes} from './routes'
 import {User} from "./models/User";
 import {ServerError} from "./utils";
 
-export const MONGO_URI = `mongodb://localhost:27017`;
-const SCHEMA_NAME = `ts-node-bp`;
-export const SCHEMA_TEST_NAME = `ts-node-bp-test`;
+export const DB_PORT = `27017`;
+export const DB_SCHEMA_NAME = `ts-node-bp`;
+export const DB_SCHEMA_TEST_NAME = `ts-node-bp-test`;
+export const LOCALHOST = `localhost`;
 export const DEVELOPMENT_ENV = `development`;
 export const TEST_ENV = `test`;
 
 process.env.NODE_ENV = process.env.NODE_ENV || DEVELOPMENT_ENV;
+process.env.DB_HOST = process.env.DB_HOST || LOCALHOST;
+
+export const MONGO_URI = `mongodb://${process.env.DB_HOST}:${DB_PORT}`;
 
 log4js.configure('./log4js.json');
 
@@ -63,7 +67,7 @@ class App {
 
     private async connectToMongo() {
         try {
-            let schema = process.env.NODE_ENV == TEST_ENV ? SCHEMA_TEST_NAME : SCHEMA_NAME;
+            let schema = process.env.NODE_ENV == TEST_ENV ? DB_SCHEMA_TEST_NAME : DB_SCHEMA_NAME;
             let uri = `${MONGO_URI}/${schema}`;
             await mongoose.connect(uri, {
                 useNewUrlParser: true,

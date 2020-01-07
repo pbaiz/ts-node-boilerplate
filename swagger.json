@@ -1,0 +1,530 @@
+{
+	"basePath": "/",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"IUser": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"roles": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"email": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"active": {
+					"type": "boolean"
+				},
+				"_id": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"roles",
+				"email",
+				"name",
+				"active",
+				"_id"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"IPaginateResultIUser": {
+			"properties": {
+				"docs": {
+					"items": {
+						"$ref": "#/definitions/IUser"
+					},
+					"type": "array"
+				},
+				"total": {
+					"type": "number",
+					"format": "double"
+				},
+				"limit": {
+					"type": "number",
+					"format": "double"
+				},
+				"page": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				},
+				"pages": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				},
+				"offset": {
+					"type": "number",
+					"format": "double",
+					"x-nullable": true
+				}
+			},
+			"required": [
+				"docs",
+				"total",
+				"limit"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ISearchAndFilter": {
+			"properties": {
+				"query": {
+					"additionalProperties": true,
+					"type": "object",
+					"x-nullable": true
+				},
+				"filter": {
+					"additionalProperties": true,
+					"type": "object",
+					"x-nullable": true
+				}
+			},
+			"type": "object",
+			"additionalProperties": true
+		},
+		"IUserCreateDto": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"email",
+				"name",
+				"password"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"IUserUpdateDto": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"roles": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"email": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"active": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"username",
+				"roles",
+				"email",
+				"name",
+				"active"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"IAuthenticationResponse": {
+			"properties": {
+				"token": {
+					"type": "string"
+				},
+				"user": {
+					"$ref": "#/definitions/IUser"
+				}
+			},
+			"required": [
+				"token",
+				"user"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"ILogin": {
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"username",
+				"password"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "ts-node-boilerplate",
+		"version": "0.1.0",
+		"description": "boilerplate of ts-node sample project",
+		"license": {
+			"name": "GNU 3"
+		}
+	},
+	"paths": {
+		"/api/v1/user/me": {
+			"get": {
+				"operationId": "GetMe",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/user": {
+			"get": {
+				"operationId": "GetAll",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IPaginateResultIUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"default": 1,
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": 10,
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": true,
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"type": "boolean"
+					},
+					{
+						"default": "_id",
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IUserCreateDto"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/user/filter": {
+			"post": {
+				"operationId": "Filter",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IPaginateResultIUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ISearchAndFilter"
+						}
+					},
+					{
+						"default": 1,
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": 10,
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"format": "double",
+						"type": "number"
+					},
+					{
+						"default": true,
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"type": "boolean"
+					},
+					{
+						"default": "_id",
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/api/v1/user/{id}": {
+			"get": {
+				"operationId": "Get",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IUserUpdateDto"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Delete",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IUser"
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/api/v1/authentication/signup": {
+			"post": {
+				"operationId": "Signup",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IAuthenticationResponse"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/IUserCreateDto"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/authentication/login": {
+			"post": {
+				"operationId": "Login",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/IAuthenticationResponse"
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ILogin"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {
+		"Bearer": {
+			"name": "Authorization",
+			"in": "header",
+			"type": "apiKey",
+			"description": "Please enter into field the word 'Bearer' following by space and JWT"
+		}
+	}
+}

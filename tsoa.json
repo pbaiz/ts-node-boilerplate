@@ -1,0 +1,34 @@
+{
+  "swagger": {
+    "entryFile": "./src/app.ts",
+    "outputDirectory": ".",
+    "controllerPathGlobs": [
+      "./src/controllers/UserController.ts",
+      "./src/controllers/AuthenticationController.ts"
+    ],
+    "securityDefinitions": {
+      "Bearer": {
+        "name": "Authorization",
+        "in": "header",
+        "type": "apiKey",
+        "description": "Please enter into field the word 'Bearer' following by space and JWT"
+      }
+    },
+    "security": [
+      {
+        "Bearer": [
+        ]
+      }
+    ]
+  },
+  "routes": {
+    "entryFile": "./src/app.ts",
+    "routesDir": "./src",
+    "middleware": "express",
+    "authenticationModule": "./src/middlewares/Authenticator.ts",
+    "controllerPathGlobs": [
+      "./src/controllers/UserController.ts",
+      "./src/controllers/AuthenticationController.ts"
+    ]
+  }
+}

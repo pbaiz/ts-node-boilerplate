@@ -9,6 +9,7 @@ NodeJS server boilerplate written in TypeScript.
 - JWT authentication.
 - Role base API security.
 - Filter endpoint using query and field selection.
+- Integration Tests
 - Docker.
 
 ### Run using Docker

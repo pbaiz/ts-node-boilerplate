@@ -1,6 +1,6 @@
 import app, {MONGO_URI, DB_SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
 import * as mongoose from 'mongoose'
-import {IUserCreateDto, IUser, User} from "../src/models/User";
+import {IUserCreateDto, IUser, UserRepository} from "../src/models/UserRepository";
 import * as request from "supertest";
 import {Response} from "superagent";
 import {IAuthenticationResponse, ILogin, IPaginateResult} from "../src/interfaces/miscInterfaces";
@@ -192,7 +192,7 @@ async function login(username: string = user.username, password: string = user.p
 
 async function deleteAllUsers() {
     try {
-        await User.deleteMany({});
+        await UserRepository.deleteMany({});
     } catch (error) {
         console.error(error);
     }
@@ -200,9 +200,9 @@ async function deleteAllUsers() {
 
 async function createUser(userDto: IUserCreateDto): Promise<IUser> {
     try {
-        const user = await User.findOne({username: userDto.username});
+        const user = await UserRepository.findOne({username: userDto.username});
         expect(user).toBeNull();
-        return await User.create(userDto);
+        return await UserRepository.create(userDto);
     } catch (error) {
         console.error(error);
     }
@@ -210,9 +210,9 @@ async function createUser(userDto: IUserCreateDto): Promise<IUser> {
 
 async function createAdminUser(): Promise<IUser> {
     try {
-        const adminFound = await User.findOne({username: 'admin'});
+        const adminFound = await UserRepository.findOne({username: 'admin'});
         if (adminFound) return adminFound;
-        return await User.create(admin);
+        return await UserRepository.create(admin);
     } catch (error) {
         console.error(error);
     }

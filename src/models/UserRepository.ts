@@ -85,18 +85,6 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(mongoosePaginate);
 
-//  function encryptPassword(password: string): string {
-// 	return crypto
-// 		.createHmac('sha1', SALT)
-// 		.update(password)
-// 		.digest('hex');
-// 	// more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
-// };
-
-// UserSchema.virtual("password").get(() => {
-//     return this.password ;
-// });
-
 UserSchema.methods.encryptPassword = function (password) {
     return crypto
         .createHmac('sha1', SALT)
@@ -119,47 +107,4 @@ UserSchema.methods.checkPassword = function (password: string): boolean {
     return this.encryptPassword(password) === this.hashedPassword;
 };
 
-UserSchema.pre<IUserDocument>("save", function (next) {
-    // this.hashedPassword = encryptPassword(this.password);
-    next();
-});
-
-// UserSchema.virtual('password')
-// 	.set(function (password) {
-// 		this._plainPassword = password;
-// 		// more secure - this.salt = crypto.randomBytes(128).toString('hex');
-// 		this.hashedPassword = this.encryptPassword(password);
-// 	})
-// 	.get(function () {
-// 		return this._plainPassword;
-//     });
-
-//     UserSchema.virtual("pass").get(function(this: { firstName: string, lastName: string}) {
-//         return this.firstName + " " + this.lastName ;
-//       }) ;
-
-
-//       export interface IUser extends Document {
-//         usernname: string,
-//         password: string
-//       }
-
-//       const usersSchema = new Schema({
-//         username: String,
-//         password: String,
-//       });
-
-//       UserSchema.pre<IUserDocument>("save", function(next) {
-//         this.password
-//         next();
-//       });
-
-
-// export var UserInterface: UserInterface;
-
-
-export const User = model<IUserDocument>('User', UserSchema);
-// export const User: Model<UserInterfaceDocument> = model<UserInterfaceDocument>('User', UserSchema);
-// const User = model('User', UserSchema);
-// export {User}
-// export var User = model('User', UserSchema);
+export const UserRepository = model<IUserDocument>('User', UserSchema);

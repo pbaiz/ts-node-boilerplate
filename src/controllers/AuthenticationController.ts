@@ -1,5 +1,5 @@
 import {Body, Controller, Post, Route} from 'tsoa'
-import {IUserCreateDto} from '../models/User';
+import {IUserCreateDto} from '../models/UserRepository';
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 import {AuthenticationService} from "../services/AuthenticationService";
 

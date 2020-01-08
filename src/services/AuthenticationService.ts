@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken'
 import * as log4js from 'log4js'
-import {IUserCreateDto, IJWTToken, SALT, User} from '../models/User';
+import {IUserCreateDto, IJWTToken, SALT, UserRepository} from '../models/UserRepository';
 import {InternalServerError, ServerError} from "../utils";
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 
@@ -10,10 +10,10 @@ export class AuthenticationService {
     public async signup(body: IUserCreateDto)
         : Promise<IAuthenticationResponse> {
         try {
-            let user = await User.findOne({username: body.username});
+            let user = await UserRepository.findOne({username: body.username});
             if (user) throw new ServerError(409);
 
-            user = await User.create(body);
+            user = await UserRepository.create(body);
             const jwtToken: IJWTToken = {
                 id: user.id,
                 roles: user.roles
@@ -28,7 +28,7 @@ export class AuthenticationService {
 
     public async login(body: ILogin): Promise<IAuthenticationResponse> {
         try {
-            let user = await User.findOne({username: body.username});
+            let user = await UserRepository.findOne({username: body.username});
             if (!user) {
                 this.logger.info(`login - bad login: ${body.username}`);
                 throw new ServerError(401);

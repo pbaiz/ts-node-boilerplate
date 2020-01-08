@@ -1,4 +1,4 @@
-import {IUserCreateDto, ISearchAndFilter, IUser, User} from "../models/User";
+import {IUserCreateDto, ISearchAndFilter, IUser, UserRepository} from "../models/UserRepository";
 import {Types} from "mongoose";
 import {IPaginateResult} from "../interfaces/miscInterfaces";
 import {InternalServerError, ServerError} from "../utils";
@@ -10,7 +10,7 @@ export class UserService {
     public async getMe(request): Promise<IUser> {
         try {
             const objectId = Types.ObjectId(request.user.id);
-            return await User.findById(objectId);
+            return await UserRepository.findById(objectId);
         } catch (error) {
             this.handleError(error);
         }
@@ -19,7 +19,7 @@ export class UserService {
     public async get(id: string): Promise<IUser> {
         try {
             const objectId = Types.ObjectId(id);
-            let user = await User.findById(objectId);
+            let user = await UserRepository.findById(objectId);
             if (!user) this.handleError(null);
             return user;
         } catch (error) {
@@ -29,7 +29,7 @@ export class UserService {
 
     public async create(body: IUserCreateDto): Promise<IUser> {
         try {
-            return await User.create(body);
+            return await UserRepository.create(body);
         } catch (error) {
             console.error(error);
             if (error) {
@@ -40,7 +40,7 @@ export class UserService {
 
     public async update(id: string, body: IUser): Promise<IUser> {
         try {
-            return await User.findOneAndUpdate(id, body, { new: true });
+            return await UserRepository.findOneAndUpdate(id, body, { new: true });
         } catch (error) {
             this.handleError(error);
         }
@@ -48,7 +48,7 @@ export class UserService {
 
     public async delete(id: string): Promise<IUser> {
         try {
-            return await User.findByIdAndRemove(id);
+            return await UserRepository.findByIdAndRemove(id);
         } catch (error) {
             this.handleError(error);
         }
@@ -62,7 +62,7 @@ export class UserService {
         const sort = {};
         sort[fieldSort] = sortAsc ? 1 : -1;
         try {
-            return await User.paginate(searchAndFilter.query, {
+            return await UserRepository.paginate(searchAndFilter.query, {
                 page: page,
                 limit: limit,
                 sort: sort,

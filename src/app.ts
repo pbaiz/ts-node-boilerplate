@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose'
 import * as swaggerUi from 'swagger-ui-express'
 import * as log4js from 'log4js'
 import {RegisterRoutes} from './routes'
-import {User} from "./models/User";
+import {UserRepository} from "./models/UserRepository";
 import {ServerError} from "./utils";
 
 export const DB_PORT = `27017`;
@@ -49,7 +49,7 @@ class App {
 
     private static async createAdminUser() {
         try {
-            const admin = await User.findOne({username: 'admin'});
+            const admin = await UserRepository.findOne({username: 'admin'});
             if (admin) return;
 
             const ADMIN = {
@@ -59,7 +59,7 @@ class App {
                 roles: ['admin'],
                 password: 'admin123'
             };
-            await User.create(ADMIN);
+            await UserRepository.create(ADMIN);
         } catch (error) {
             console.error(error);
         }

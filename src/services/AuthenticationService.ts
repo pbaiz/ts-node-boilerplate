@@ -1,8 +1,9 @@
 import * as jwt from 'jsonwebtoken'
 import * as log4js from 'log4js'
-import {IUserCreateDto, IJWTToken, SALT, UserRepository} from '../models/UserRepository';
+import {IUserCreateDto, IJWTToken, UserRepository} from '../repositories/UserRepository';
 import {InternalServerError, ServerError} from "../utils";
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
+import {SALT} from "../middlewares/Authenticator";
 
 export class AuthenticationService {
     private logger = log4js.getLogger("AuthenticationService");

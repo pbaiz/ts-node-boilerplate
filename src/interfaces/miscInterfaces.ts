@@ -1,4 +1,4 @@
-import {IUser} from "../models/UserRepository";
+import {IUser} from "../repositories/UserRepository";
 
 export interface ILogin {
     username: string,

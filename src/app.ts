@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose'
 import * as swaggerUi from 'swagger-ui-express'
 import * as log4js from 'log4js'
 import {RegisterRoutes} from './routes'
-import {UserRepository} from "./models/UserRepository";
+import {UserRepository} from "./repositories/UserRepository";
 import {ServerError} from "./utils";
 
 export const DB_PORT = `27017`;

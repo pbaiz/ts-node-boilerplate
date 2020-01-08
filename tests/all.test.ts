@@ -1,6 +1,6 @@
 import app, {MONGO_URI, DB_SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
 import * as mongoose from 'mongoose'
-import {IUserCreateDto, IUser, UserRepository} from "../src/models/UserRepository";
+import {IUserCreateDto, IUser, UserRepository} from "../src/repositories/UserRepository";
 import * as request from "supertest";
 import {Response} from "superagent";
 import {IAuthenticationResponse, ILogin, IPaginateResult} from "../src/interfaces/miscInterfaces";

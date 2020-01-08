@@ -2,7 +2,7 @@ import {Document, model, Schema} from 'mongoose'
 import * as crypto from 'crypto'
 import * as mongoosePaginate from 'mongoose-paginate'
 
-export const SALT = '5c07a1d7b7d6d30cc7c59bf865860d75ff6ec8fef9e54c416501e9d0e2172d09';
+const SALT = '1d8b84e4a115eea3f32ea772070238ab832bcd72b2fb59566c6e13e21c5d99db';
 
 export interface ISearchAndFilter {
     query?: any,

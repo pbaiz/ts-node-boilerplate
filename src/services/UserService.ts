@@ -1,4 +1,4 @@
-import {IUserCreateDto, ISearchAndFilter, IUser, UserRepository} from "../models/UserRepository";
+import {IUserCreateDto, ISearchAndFilter, IUser, UserRepository} from "../repositories/UserRepository";
 import {Types} from "mongoose";
 import {IPaginateResult} from "../interfaces/miscInterfaces";
 import {InternalServerError, ServerError} from "../utils";

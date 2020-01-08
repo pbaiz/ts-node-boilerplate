@@ -34,5 +34,5 @@ If you not set the variable NODE_ENV, it will be automatly set to 'develop' and 
 - POST api/v1/authentication/login
 - GET api/v1/user/me
 
-The admin user can add admin role to other users though:
+The admin user can add admin role to other users through:
 - PUT api/v1/user/

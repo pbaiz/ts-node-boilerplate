@@ -5,22 +5,6 @@ import {IJWTToken} from '../repositories/UserRepository';
 export const SALT = '26a44e43b71f408b4341a90482099cfae28736b703b486fd50921d34694b30d2';
 
 export function expressAuthentication(request: express.Request, securityName: string, scopes?: string[]): Promise<any> {
-    if (securityName === 'api_token') {
-        let token;
-        if (request.query && request.query.access_token) {
-            token = request.query.access_token;
-        }
-
-        if (token === 'abc123456') {
-            return Promise.resolve({
-                id: 1,
-                name: 'Ironman'
-            });
-        } else {
-            return Promise.reject({});
-        }
-    }
-
     if (securityName === 'jwt') {
         let token = request.headers.authorization;
 

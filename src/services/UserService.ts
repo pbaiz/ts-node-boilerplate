@@ -1,6 +1,6 @@
-import {IUserCreateDto, ISearchAndFilter, IUser, UserRepository} from "../repositories/UserRepository";
+import {IUserCreateDto, IUser, UserRepository} from "../repositories/UserRepository";
 import {Types} from "mongoose";
-import {IPaginateResult} from "../interfaces/miscInterfaces";
+import {IPaginateResult, ISearchAndFilter} from "../interfaces/miscInterfaces";
 import {InternalServerError, ServerError} from "../utils";
 import * as log4js from "log4js";
 

@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Post, Put, Query, Request, Route, Security} from 'tsoa'
-import {IUserCreateDto, ISearchAndFilter, IUserUpdateDto, IUser} from '../repositories/UserRepository';
-import {IPaginateResult} from "../interfaces/miscInterfaces";
+import {IUserCreateDto, IUserUpdateDto, IUser} from '../repositories/UserRepository';
+import {IPaginateResult, ISearchAndFilter} from "../interfaces/miscInterfaces";
 import {UserService} from "../services/UserService";
 import {ServerError} from "../utils";
 

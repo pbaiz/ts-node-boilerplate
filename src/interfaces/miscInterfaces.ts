@@ -10,6 +10,11 @@ export interface IAuthenticationResponse {
     user: IUser
 }
 
+export interface ISearchAndFilter {
+    query?: any,
+    filter?: any
+}
+
 export interface IPaginateResult<T> {
     docs: Array<T>;
     total: number;

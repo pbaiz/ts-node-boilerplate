@@ -4,11 +4,6 @@ import * as mongoosePaginate from 'mongoose-paginate'
 
 const SALT = '1d8b84e4a115eea3f32ea772070238ab832bcd72b2fb59566c6e13e21c5d99db';
 
-export interface ISearchAndFilter {
-    query?: any,
-    filter?: any
-}
-
 interface IUserAbstraction {
     username: string,
     roles: string[],

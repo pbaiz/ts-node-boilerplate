@@ -6,6 +6,9 @@ import * as log4js from 'log4js'
 import {RegisterRoutes} from './routes'
 import {UserRepository} from "./repositories/UserRepository";
 import {ServerError} from "./utils";
+// import * as i18n from "./i18n";
+const i18n = require('./i18n');
+// import * as i18n from "./i18n";
 
 export const DB_PORT = `27017`;
 export const DB_SCHEMA_NAME = `ts-node-bp`;
@@ -37,6 +40,7 @@ class App {
         this.connectToMongo();
 
         RegisterRoutes(this.express);
+        i18n.initI18n(this.express);
         this.express.get('/ping', (req, res) => {
             return res.send('pong');
         });

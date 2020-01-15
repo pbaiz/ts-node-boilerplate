@@ -1,0 +1,15 @@
+{
+  "invalid_user_pass":"username ou password invalido",
+  "missing_param":"faltando parâmetro {{name}}",
+  "invalid_passenger_username":"username do passageiro invalido: {{name}}",
+  "invalid_coupon":"Cupom inválido",
+  "invalid_coupon_expired":"Cupom expirado",
+  "invalid_coupon_already_used":"Cumpom ja utilizado",
+  "invalid_coupon_cant_use_coupon_generated_by_yourself":"Não é permitido ativar um cupom gerado por você mesmo",
+  "invalid_coupon_finish_at_least_one_paid_ride":"Não é permitido gerar cupom ate que você finalize pelo menos uma corrida paga",
+  "invalid_coupon_new_users_only":"Cupom valido apenas para novos usuarios",
+  "invalid_driver_username":"username do motorista Invalido: {{name}}",
+  "user_running_ride":"corrida em andamento: {{name}}",
+  "invalid_region":"Região Invalida: {{name}}",
+  "user_banned":"Usuario Banido: {{name}}"
+}

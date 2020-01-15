@@ -7,7 +7,7 @@ import {RegisterRoutes} from './routes'
 import {UserRepository} from "./repositories/UserRepository";
 import {ServerError} from "./utils";
 // import * as i18n from "./i18n";
-const i18n = require('./i18n');
+const i18n = require('./middlewares/i18n');
 // import * as i18n from "./i18n";
 
 export const DB_PORT = `27017`;

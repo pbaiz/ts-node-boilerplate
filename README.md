@@ -21,7 +21,7 @@ $ docker-compose up --build
 
 ### Run locally using Npm
 ```bash
-$ npm install
+$ npm install --scripts-prepend-node-path=auto
 $ npm start
 ```
 

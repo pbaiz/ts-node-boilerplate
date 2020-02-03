@@ -27,7 +27,7 @@ $ npm start
 
 ### Run tests using Npm
 ```bash
-$ npm install
+$ npm install --scripts-prepend-node-path=auto
 $ npm test
 ``` 
 Use Node v10.18.0 or bellow. There is a bug on a spdy http2 library for Node 11 and beyond: https://github.com/spdy-http2/handle-thing/pull/13 

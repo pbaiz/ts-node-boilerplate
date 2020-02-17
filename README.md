@@ -16,6 +16,7 @@ NodeJS server boilerplate written in TypeScript.
 
 ### Run using Docker
 ```bash
+$ npm install --scripts-prepend-node-path=auto
 $ docker-compose up --build
 ``` 
 

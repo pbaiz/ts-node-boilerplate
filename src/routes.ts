@@ -99,7 +99,7 @@ export function RegisterRoutes(app: express.Express) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
     app.get('/api/v1/user/me',
-        authenticateMiddleware([{ "jwt": [] }]),
+        authenticateMiddleware([{ "Bearer": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -122,7 +122,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/user',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
@@ -148,7 +148,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/user/filter',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 body: { "in": "body", "name": "body", "required": true, "ref": "ISearchAndFilter" },
@@ -175,7 +175,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/user/:id',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -198,7 +198,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/user',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 body: { "in": "body", "name": "body", "required": true, "ref": "IUserCreateDto" },
@@ -221,7 +221,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.put('/api/v1/user/:id',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -245,7 +245,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.delete('/api/v1/user/:id',
-        authenticateMiddleware([{ "jwt": ["admin"] }]),
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -404,15 +404,15 @@ export function RegisterRoutes(app: express.Express) {
                 case 'request':
                     return request;
                 case 'query':
-                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 2 });
+                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'path':
-                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 2 });
+                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'header':
-                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 2 });
+                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'body':
-                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 2 });
+                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'body-prop':
-                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 2 });
+                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
             }
         });
 

@@ -1,5 +1,6 @@
 {
   "swagger": {
+    "specVersion": 3,
     "entryFile": "./src/app.ts",
     "outputDirectory": ".",
     "controllerPathGlobs": [

@@ -22,7 +22,7 @@ const models: TsoaRoute.Models = {
             "active": { "dataType": "boolean", "required": true },
             "_id": { "dataType": "string", "required": true },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IPaginateResultIUser": {
@@ -35,7 +35,7 @@ const models: TsoaRoute.Models = {
             "pages": { "dataType": "double" },
             "offset": { "dataType": "double" },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISearchAndFilter": {
@@ -44,7 +44,7 @@ const models: TsoaRoute.Models = {
             "query": { "dataType": "any" },
             "filter": { "dataType": "any" },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserCreateDto": {
@@ -55,7 +55,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "password": { "dataType": "string", "required": true },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserUpdateDto": {
@@ -67,7 +67,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAuthenticationResponse": {
@@ -76,7 +76,7 @@ const models: TsoaRoute.Models = {
             "token": { "dataType": "string", "required": true },
             "user": { "ref": "IUser", "required": true },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ILogin": {
@@ -85,7 +85,7 @@ const models: TsoaRoute.Models = {
             "username": { "dataType": "string", "required": true },
             "password": { "dataType": "string", "required": true },
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -404,15 +404,15 @@ export function RegisterRoutes(app: express.Express) {
                 case 'request':
                     return request;
                 case 'query':
-                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'path':
-                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'header':
-                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'body':
-                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
                 case 'body-prop':
-                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
             }
         });
 

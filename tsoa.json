@@ -3,6 +3,7 @@
     "specVersion": 3,
     "entryFile": "./src/app.ts",
     "outputDirectory": ".",
+    "noImplicitAdditionalProperties": "throw-on-extras",
     "controllerPathGlobs": [
       "./src/controllers/UserController.ts",
       "./src/controllers/AuthenticationController.ts"

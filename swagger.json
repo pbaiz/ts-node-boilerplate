@@ -199,7 +199,7 @@
 		"version": "0.1.0",
 		"description": "boilerplate of ts-node sample project",
 		"license": {
-			"name": "GNU 3"
+			"name": "GPL 3"
 		}
 	},
 	"openapi": "3.0.0",
@@ -219,6 +219,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": []
@@ -242,6 +245,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -304,6 +310,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -338,6 +347,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -411,6 +423,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -443,6 +458,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -484,6 +502,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"Bearer": [
@@ -518,6 +539,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"Authentication"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -546,6 +570,9 @@
 						"description": "Ok"
 					}
 				},
+				"tags": [
+					"Authentication"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {

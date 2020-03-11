@@ -57,7 +57,7 @@
     "spdy"
   ],
   "author": "Leonardo Cartaxo",
-  "license": "GNU 3",
+  "license": "GPL 3",
   "bugs": {
     "url": "https://github.com/leonardocartaxo/ts-node-boilerplate.git%1B%5BH/issues"
   },

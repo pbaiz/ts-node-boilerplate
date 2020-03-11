@@ -1,9 +1,10 @@
-import {Body, Controller, Post, Route} from 'tsoa'
+import {Body, Controller, Post, Route, Tags} from 'tsoa'
 import {IUserCreateDto} from '../repositories/UserRepository';
 import {IAuthenticationResponse, ILogin} from "../interfaces/miscInterfaces";
 import {AuthenticationService} from "../services/AuthenticationService";
 
 @Route('api/v1/authentication/')
+@Tags('Authentication')
 export class AuthenticationController extends Controller {
 
     @Post('signup')

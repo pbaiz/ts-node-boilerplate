@@ -4,10 +4,6 @@
     "entryFile": "./src/app.ts",
     "outputDirectory": ".",
     "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": [
-      "./src/controllers/UserController.ts",
-      "./src/controllers/AuthenticationController.ts"
-    ],
     "securityDefinitions": {
       "Bearer": {
         "name": "Authorization",
@@ -27,10 +23,6 @@
     "entryFile": "./src/app.ts",
     "routesDir": "./src",
     "middleware": "express",
-    "authenticationModule": "./src/middlewares/Authenticator.ts",
-    "controllerPathGlobs": [
-      "./src/controllers/UserController.ts",
-      "./src/controllers/AuthenticationController.ts"
-    ]
+    "authenticationModule": "./src/middlewares/Authenticator.ts"
   }
 }

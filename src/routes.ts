@@ -404,15 +404,15 @@ export function RegisterRoutes(app: express.Express) {
                 case 'request':
                     return request;
                 case 'query':
-                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "specVersion": 3 });
                 case 'path':
-                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "specVersion": 3 });
                 case 'header':
-                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras", "specVersion": 3 });
                 case 'body':
-                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, name + '.', { "noImplicitAdditionalProperties": "throw-on-extras", "specVersion": 3 });
                 case 'body-prop':
-                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "noImplicitAdditionalProperties": "throw-on-extras", "controllerPathGlobs": ["./src/controllers/UserController.ts", "./src/controllers/AuthenticationController.ts"], "specVersion": 3 });
+                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "noImplicitAdditionalProperties": "throw-on-extras", "specVersion": 3 });
             }
         });
 

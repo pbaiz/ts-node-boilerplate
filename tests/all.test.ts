@@ -1,6 +1,6 @@
-import app, {MONGO_URI, DB_SCHEMA_TEST_NAME, TEST_ENV} from "../src/app";
+import app, {DB_SCHEMA_TEST_NAME, MONGO_URI, TEST_ENV} from "../src/app";
 import * as mongoose from 'mongoose'
-import {IUserCreateDto, IUser, UserRepository} from "../src/repositories/UserRepository";
+import {IUser, IUserCreateDto, IUserUpdateDto, UserRepository} from "../src/repositories/UserRepository";
 import * as request from "supertest";
 import {Response} from "superagent";
 import {IAuthenticationResponse, ILogin, IPaginateResult} from "../src/interfaces/miscInterfaces";
@@ -44,6 +44,25 @@ beforeEach(async () => {
 
 afterEach(async () => {
     await deleteAllUsers();
+});
+
+afterAll(async () => {
+    try {
+        // cleanup database(s)
+        await deleteAllUsers();
+
+        // Connection to Mongo killed.
+        await mongoose.disconnect();
+
+        // Server connection closed.
+        //await server.close();
+    } catch (error) {
+        console.log(`
+        Error in afterAll() of TEST environment: 
+        ${error}
+      `);
+        throw error;
+    }
 });
 
 describe("Server Online", () => {
@@ -143,12 +162,18 @@ describe("User", () => {
     it("UPDATE / User", async () => {
         const userCreated = await createUser(user);
         let nameUpdated = 'User Updated';
-        userCreated.name = nameUpdated;
+        const userUpdated: IUserUpdateDto = {
+            username: userCreated.username,
+            active: userCreated.active,
+            email: userCreated.email,
+            name: nameUpdated,
+            roles: userCreated.roles
+        };
         let token = await getAdminToken();
         const response = await request(app)
             .put(`/api/v1/user/${userCreated._id}`)
             .set('Authorization', 'Bearer ' + token)
-            .send(userCreated);
+            .send(userUpdated);
         let body = response.body as IUser;
         expect(response.status).toEqual(200);
         expect(body).not.toBeNull();

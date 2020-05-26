@@ -1,9 +1,9 @@
 {
-  "swagger": {
-    "specVersion": 3,
-    "entryFile": "./src/app.ts",
+  "entryFile": "./src/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "spec": {
     "outputDirectory": ".",
-    "noImplicitAdditionalProperties": "throw-on-extras",
+    "specVersion": 3,
     "securityDefinitions": {
       "Bearer": {
         "name": "Authorization",
@@ -11,16 +11,9 @@
         "type": "apiKey",
         "description": "Please enter into field the word 'Bearer' following by space and JWT"
       }
-    },
-    "security": [
-      {
-        "Bearer": [
-        ]
-      }
-    ]
+    }
   },
   "routes": {
-    "entryFile": "./src/app.ts",
     "routesDir": "./src",
     "middleware": "express",
     "authenticationModule": "./src/middlewares/Authenticator.ts"

@@ -1,4 +1,4 @@
-import {IUserCreateDto, IUser, UserRepository} from "../repositories/UserRepository";
+import {IUser, IUserCreateDto, UserRepository} from "../repositories/UserRepository";
 import {Types} from "mongoose";
 import {IPaginateResult, ISearchAndFilter} from "../interfaces/miscInterfaces";
 import {InternalServerError, ServerError} from "../utils";
@@ -40,7 +40,7 @@ export class UserService {
 
     public async update(id: string, body: IUser): Promise<IUser> {
         try {
-            return await UserRepository.findOneAndUpdate(id, body, { new: true });
+            return await UserRepository.findByIdAndUpdate(id, body, {new: true});
         } catch (error) {
             this.handleError(error);
         }
@@ -83,7 +83,7 @@ export class UserService {
         } else if (error.name === 'MongoError' && error.code === 11000) {
             throw new ServerError(409);
         } else {
-            throw new ServerError( 500,[new InternalServerError(error.message, error.stack)]);
+            throw new ServerError(500, [new InternalServerError(error.message, error.stack)]);
         }
     }
 }

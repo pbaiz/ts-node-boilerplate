@@ -12,7 +12,7 @@ interface IUserAbstraction {
     active: boolean
 }
 
-export interface IUser extends IUserAbstraction{
+export interface IUser extends IUserAbstraction {
     _id: string
 }
 

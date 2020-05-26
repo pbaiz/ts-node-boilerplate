@@ -86,7 +86,7 @@ class App {
         this.express.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
             const body: ServerError = {
                 status: err.status || 500,
-                internalServerErrors: err.internalServerErrors
+                internalServerErrors: err
             };
             res.status(body.status).json(body);
             next();

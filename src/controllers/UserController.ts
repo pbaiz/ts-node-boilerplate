@@ -1,8 +1,7 @@
 import {Body, Controller, Delete, Get, Post, Put, Query, Request, Route, Security, Tags} from 'tsoa'
-import {IUserCreateDto, IUserUpdateDto, IUser} from '../repositories/UserRepository';
+import {IUser, IUserCreateDto, IUserUpdateDto} from '../repositories/UserRepository';
 import {IPaginateResult, ISearchAndFilter} from "../interfaces/miscInterfaces";
 import {UserService} from "../services/UserService";
-import {ServerError} from "../utils";
 
 @Route('api/v1/user/')
 @Tags('User')

@@ -46,7 +46,8 @@
     "url": "https://github.com/leonardocartaxo/ts-node-boilerplate.git%1B%5BH.git"
   },
   "keywords": [
-    "node",
+    "Node.js",
+    "TypeScript",
     "ts-node",
     "tsoa",
     "swagger",
@@ -54,7 +55,10 @@
     "mongodb",
     "mongoose",
     "http2",
-    "spdy"
+    "spdy",
+    "jest",
+    "express",
+    "jsonWebToken"
   ],
   "author": "Leonardo Cartaxo",
   "license": "GPL 3",

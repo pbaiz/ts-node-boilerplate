@@ -1,5 +1,5 @@
 # ts-node-boilerplate
-NodeJS server boilerplate written in TypeScript.
+Node.js server boilerplate written in TypeScript.
 
 ## Features
 - Auto generated swagger documentation.

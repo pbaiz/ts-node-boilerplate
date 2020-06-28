@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import {Controller, FieldErrors, TsoaRoute, ValidateError, ValidationService} from 'tsoa';
+import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import {UserController} from './controllers/UserController';
+import { UserController } from './controllers/UserController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import {AuthenticationController} from './controllers/AuthenticationController';
-import {expressAuthentication} from './middlewares/Authenticator';
+import { AuthenticationController } from './controllers/AuthenticationController';
+import { expressAuthentication } from './middlewares/Authenticator';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -15,12 +15,12 @@ const models: TsoaRoute.Models = {
     "IUser": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType": "string", "required": true},
-            "roles": {"dataType": "array", "array": {"dataType": "string"}, "required": true},
-            "email": {"dataType": "string", "required": true},
-            "name": {"dataType": "string", "required": true},
-            "active": {"dataType": "boolean", "required": true},
-            "_id": {"dataType": "string", "required": true},
+            "username": { "dataType": "string", "required": true },
+            "roles": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "email": { "dataType": "string", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
+            "_id": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -28,12 +28,12 @@ const models: TsoaRoute.Models = {
     "IPaginateResult_IUser_": {
         "dataType": "refObject",
         "properties": {
-            "docs": {"dataType": "array", "array": {"ref": "IUser"}, "required": true},
-            "total": {"dataType": "double", "required": true},
-            "limit": {"dataType": "double", "required": true},
-            "page": {"dataType": "double"},
-            "pages": {"dataType": "double"},
-            "offset": {"dataType": "double"},
+            "docs": { "dataType": "array", "array": { "ref": "IUser" }, "required": true },
+            "total": { "dataType": "double", "required": true },
+            "limit": { "dataType": "double", "required": true },
+            "page": { "dataType": "double" },
+            "pages": { "dataType": "double" },
+            "offset": { "dataType": "double" },
         },
         "additionalProperties": false,
     },
@@ -41,8 +41,8 @@ const models: TsoaRoute.Models = {
     "ISearchAndFilter": {
         "dataType": "refObject",
         "properties": {
-            "query": {"dataType": "any"},
-            "filter": {"dataType": "any"},
+            "query": { "dataType": "any" },
+            "filter": { "dataType": "any" },
         },
         "additionalProperties": false,
     },
@@ -50,10 +50,10 @@ const models: TsoaRoute.Models = {
     "IUserCreateDto": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType": "string", "required": true},
-            "email": {"dataType": "string", "required": true},
-            "name": {"dataType": "string", "required": true},
-            "password": {"dataType": "string", "required": true},
+            "username": { "dataType": "string", "required": true },
+            "email": { "dataType": "string", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "password": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -61,11 +61,11 @@ const models: TsoaRoute.Models = {
     "IUserUpdateDto": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType": "string", "required": true},
-            "roles": {"dataType": "array", "array": {"dataType": "string"}, "required": true},
-            "email": {"dataType": "string", "required": true},
-            "name": {"dataType": "string", "required": true},
-            "active": {"dataType": "boolean", "required": true},
+            "username": { "dataType": "string", "required": true },
+            "roles": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "email": { "dataType": "string", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
         },
         "additionalProperties": false,
     },
@@ -73,8 +73,8 @@ const models: TsoaRoute.Models = {
     "IAuthenticationResponse": {
         "dataType": "refObject",
         "properties": {
-            "token": {"dataType": "string", "required": true},
-            "user": {"ref": "IUser", "required": true},
+            "token": { "dataType": "string", "required": true },
+            "user": { "ref": "IUser", "required": true },
         },
         "additionalProperties": false,
     },
@@ -82,8 +82,8 @@ const models: TsoaRoute.Models = {
     "ILogin": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType": "string", "required": true},
-            "password": {"dataType": "string", "required": true},
+            "username": { "dataType": "string", "required": true },
+            "password": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -99,10 +99,10 @@ export function RegisterRoutes(app: express.Express) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
     app.get('/api/v1/user/me',
-        authenticateMiddleware([{"Bearer": []}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": [] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                request: {"in": "request", "name": "request", "required": true, "dataType": "object"},
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -122,13 +122,13 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/user',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                page: {"default": 1, "in": "query", "name": "page", "dataType": "double"},
-                limit: {"default": 10, "in": "query", "name": "limit", "dataType": "double"},
-                sortAsc: {"default": true, "in": "query", "name": "sortAsc", "dataType": "boolean"},
-                fieldSort: {"default": "_id", "in": "query", "name": "fieldSort", "dataType": "string"},
+                page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
+                limit: { "default": 10, "in": "query", "name": "limit", "dataType": "double" },
+                sortAsc: { "default": true, "in": "query", "name": "sortAsc", "dataType": "boolean" },
+                fieldSort: { "default": "_id", "in": "query", "name": "fieldSort", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -148,14 +148,14 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/user/filter',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                body: {"in": "body", "name": "body", "required": true, "ref": "ISearchAndFilter"},
-                page: {"default": 1, "in": "query", "name": "page", "dataType": "double"},
-                limit: {"default": 10, "in": "query", "name": "limit", "dataType": "double"},
-                sortAsc: {"default": true, "in": "query", "name": "sortAsc", "dataType": "boolean"},
-                fieldSort: {"default": "_id", "in": "query", "name": "fieldSort", "dataType": "string"},
+                body: { "in": "body", "name": "body", "required": true, "ref": "ISearchAndFilter" },
+                page: { "default": 1, "in": "query", "name": "page", "dataType": "double" },
+                limit: { "default": 10, "in": "query", "name": "limit", "dataType": "double" },
+                sortAsc: { "default": true, "in": "query", "name": "sortAsc", "dataType": "boolean" },
+                fieldSort: { "default": "_id", "in": "query", "name": "fieldSort", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -175,10 +175,10 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/user/:id',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                id: {"in": "path", "name": "id", "required": true, "dataType": "string"},
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -198,10 +198,10 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/user',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                body: {"in": "body", "name": "body", "required": true, "ref": "IUserCreateDto"},
+                body: { "in": "body", "name": "body", "required": true, "ref": "IUserCreateDto" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -221,11 +221,11 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.put('/api/v1/user/:id',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                id: {"in": "path", "name": "id", "required": true, "dataType": "string"},
-                body: {"in": "body", "name": "body", "required": true, "ref": "IUserUpdateDto"},
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "IUserUpdateDto" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -245,10 +245,10 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.delete('/api/v1/user/:id',
-        authenticateMiddleware([{"Bearer": ["admin"]}]),
-        function (request: any, response: any, next: any) {
+        authenticateMiddleware([{ "Bearer": ["admin"] }]),
+        function(request: any, response: any, next: any) {
             const args = {
-                id: {"in": "path", "name": "id", "required": true, "dataType": "string"},
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -268,9 +268,9 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/authentication/signup',
-        function (request: any, response: any, next: any) {
+        function(request: any, response: any, next: any) {
             const args = {
-                body: {"in": "body", "name": "body", "required": true, "ref": "IUserCreateDto"},
+                body: { "in": "body", "name": "body", "required": true, "ref": "IUserCreateDto" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -290,9 +290,9 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/authentication/login',
-        function (request: any, response: any, next: any) {
+        function(request: any, response: any, next: any) {
             const args = {
-                body: {"in": "body", "name": "body", "required": true, "ref": "ILogin"},
+                body: { "in": "body", "name": "body", "required": true, "ref": "ILogin" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -319,7 +319,7 @@ export function RegisterRoutes(app: express.Express) {
             let responded = 0;
             let success = false;
 
-            const succeed = function (user: any) {
+            const succeed = function(user: any) {
                 if (!success) {
                     success = true;
                     responded++;
@@ -330,7 +330,7 @@ export function RegisterRoutes(app: express.Express) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-            const fail = function (error: any) {
+            const fail = function(error: any) {
                 responded++;
                 if (responded == security.length && !success) {
                     error.status = error.status || 401;
@@ -349,9 +349,7 @@ export function RegisterRoutes(app: express.Express) {
                     }
 
                     Promise.all(promises)
-                        .then((users) => {
-                            succeed(users[0]);
-                        })
+                        .then((users) => { succeed(users[0]); })
                         .catch(fail);
                 } else {
                     for (const name in secMethod) {
@@ -406,15 +404,15 @@ export function RegisterRoutes(app: express.Express) {
                 case 'request':
                     return request;
                 case 'query':
-                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, {"noImplicitAdditionalProperties": "throw-on-extras"});
+                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
                 case 'path':
-                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, {"noImplicitAdditionalProperties": "throw-on-extras"});
+                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
                 case 'header':
-                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, {"noImplicitAdditionalProperties": "throw-on-extras"});
+                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
                 case 'body':
-                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, undefined, {"noImplicitAdditionalProperties": "throw-on-extras"});
+                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
                 case 'body-prop':
-                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', {"noImplicitAdditionalProperties": "throw-on-extras"});
+                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "noImplicitAdditionalProperties": "throw-on-extras" });
             }
         });
 

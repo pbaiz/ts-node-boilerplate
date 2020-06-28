@@ -1,593 +1,593 @@
 {
-  "components": {
-    "examples": {},
-    "headers": {},
-    "parameters": {},
-    "requestBodies": {},
-    "responses": {},
-    "schemas": {
-      "IUser": {
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "roles": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "active": {
-            "type": "boolean"
-          },
-          "_id": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "roles",
-          "email",
-          "name",
-          "active",
-          "_id"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "IPaginateResult_IUser_": {
-        "properties": {
-          "docs": {
-            "items": {
-              "$ref": "#/components/schemas/IUser"
-            },
-            "type": "array"
-          },
-          "total": {
-            "type": "number",
-            "format": "double"
-          },
-          "limit": {
-            "type": "number",
-            "format": "double"
-          },
-          "page": {
-            "type": "number",
-            "format": "double"
-          },
-          "pages": {
-            "type": "number",
-            "format": "double"
-          },
-          "offset": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "docs",
-          "total",
-          "limit"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "ISearchAndFilter": {
-        "properties": {
-          "query": {
-            "additionalProperties": true
-          },
-          "filter": {
-            "additionalProperties": true
-          }
-        },
-        "type": "object",
-        "additionalProperties": false
-      },
-      "IUserCreateDto": {
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "email",
-          "name",
-          "password"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "IUserUpdateDto": {
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "roles": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "active": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "username",
-          "roles",
-          "email",
-          "name",
-          "active"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "IAuthenticationResponse": {
-        "properties": {
-          "token": {
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/IUser"
-          }
-        },
-        "required": [
-          "token",
-          "user"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "ILogin": {
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "password"
-        ],
-        "type": "object",
-        "additionalProperties": false
-      }
-    },
-    "securitySchemes": {
-      "Bearer": {
-        "name": "Authorization",
-        "in": "header",
-        "type": "apiKey",
-        "description": "Please enter into field the word 'Bearer' following by space and JWT"
-      }
-    }
-  },
-  "info": {
-    "title": "ts-node-boilerplate",
-    "version": "0.1.0",
-    "description": "boilerplate of ts-node sample project",
-    "license": {
-      "name": "GPL 3"
-    }
-  },
-  "openapi": "3.0.0",
-  "paths": {
-    "/api/v1/user/me": {
-      "get": {
-        "operationId": "GetMe",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IUser"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": []
-      }
-    },
-    "/api/v1/user": {
-      "get": {
-        "operationId": "GetAll",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IPaginateResult_IUser_"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "page",
-            "required": false,
-            "schema": {
-              "default": 1,
-              "format": "double",
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "required": false,
-            "schema": {
-              "default": 10,
-              "format": "double",
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sortAsc",
-            "required": false,
-            "schema": {
-              "default": true,
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fieldSort",
-            "required": false,
-            "schema": {
-              "default": "_id",
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "post": {
-        "operationId": "Create",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IUser"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IUserCreateDto"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/user/filter": {
-      "post": {
-        "operationId": "Filter",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IPaginateResult_IUser_"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "page",
-            "required": false,
-            "schema": {
-              "default": 1,
-              "format": "double",
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "required": false,
-            "schema": {
-              "default": 10,
-              "format": "double",
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "sortAsc",
-            "required": false,
-            "schema": {
-              "default": true,
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fieldSort",
-            "required": false,
-            "schema": {
-              "default": "_id",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ISearchAndFilter"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/user/{id}": {
-      "get": {
-        "operationId": "Get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IUser"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "put": {
-        "operationId": "Update",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IUser"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IUserUpdateDto"
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "Delete",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IUser"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "User"
-        ],
-        "security": [
-          {
-            "Bearer": [
-              "admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      }
-    },
-    "/api/v1/authentication/signup": {
-      "post": {
-        "operationId": "Signup",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IAuthenticationResponse"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "Authentication"
-        ],
-        "security": [],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IUserCreateDto"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/authentication/login": {
-      "post": {
-        "operationId": "Login",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IAuthenticationResponse"
-                }
-              }
-            },
-            "description": "Ok"
-          }
-        },
-        "tags": [
-          "Authentication"
-        ],
-        "security": [],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ILogin"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "servers": [
-    {
-      "url": "/"
-    }
-  ]
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IUser": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"roles",
+					"email",
+					"name",
+					"active",
+					"_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPaginateResult_IUser_": {
+				"properties": {
+					"docs": {
+						"items": {
+							"$ref": "#/components/schemas/IUser"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"docs",
+					"total",
+					"limit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISearchAndFilter": {
+				"properties": {
+					"query": {
+						"additionalProperties": true
+					},
+					"filter": {
+						"additionalProperties": true
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserCreateDto": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"email",
+					"name",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserUpdateDto": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"roles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"username",
+					"roles",
+					"email",
+					"name",
+					"active"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAuthenticationResponse": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/IUser"
+					}
+				},
+				"required": [
+					"token",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILogin": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"Bearer": {
+				"name": "Authorization",
+				"in": "header",
+				"type": "apiKey",
+				"description": "Please enter into field the word 'Bearer' following by space and JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "ts-node-boilerplate",
+		"version": "0.1.0",
+		"description": "boilerplate of ts-node sample project",
+		"license": {
+			"name": "GPL 3"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/v1/user/me": {
+			"get": {
+				"operationId": "GetMe",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/v1/user": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPaginateResult_IUser_"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"schema": {
+							"default": true,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"schema": {
+							"default": "_id",
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserCreateDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/user/filter": {
+			"post": {
+				"operationId": "Filter",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPaginateResult_IUser_"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"schema": {
+							"default": true,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"schema": {
+							"default": "_id",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISearchAndFilter"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/user/{id}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserUpdateDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/authentication/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAuthenticationResponse"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserCreateDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/authentication/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAuthenticationResponse"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILogin"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
 }

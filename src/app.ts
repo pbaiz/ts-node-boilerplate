@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as helmet from 'helmet';
 import * as cors from 'cors'
 import * as mongoose from 'mongoose'
 import * as swaggerUi from 'swagger-ui-express'
@@ -28,6 +29,7 @@ class App {
     public constructor() {
         this.express = express();
 
+        this.express.use(helmet());
         this.express.use(log4js.connectLogger(log4js.getLogger("http"), {level: 'auto'}));
         this.express.use(express.json());
         this.express.use(cors());

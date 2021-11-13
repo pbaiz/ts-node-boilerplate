@@ -1,6 +1,7 @@
 {
   "entryFile": "./src/app.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/*Controller.ts"],
   "spec": {
     "outputDirectory": ".",
     "specVersion": 3,

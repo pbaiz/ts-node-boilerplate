@@ -41,11 +41,91 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IPaginateResult_IUser_": {
+			"IAuthenticationResponse": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/IUser"
+					}
+				},
+				"required": [
+					"token",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserCreateDto": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"email",
+					"name",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILogin": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPlace": {
+				"properties": {
+					"location": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"location",
+					"name",
+					"active",
+					"_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPaginateResult_IPlace_": {
 				"properties": {
 					"docs": {
 						"items": {
-							"$ref": "#/components/schemas/IUser"
+							"$ref": "#/components/schemas/IPlace"
 						},
 						"type": "array"
 					},
@@ -90,12 +170,9 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IUserCreateDto": {
+			"IPlaceCreateDto": {
 				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"email": {
+					"location": {
 						"type": "string"
 					},
 					"name": {
@@ -106,10 +183,66 @@
 					}
 				},
 				"required": [
-					"username",
-					"email",
+					"location",
 					"name",
 					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPlaceUpdateDto": {
+				"properties": {
+					"location": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"location",
+					"name",
+					"active"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPaginateResult_IUser_": {
+				"properties": {
+					"docs": {
+						"items": {
+							"$ref": "#/components/schemas/IUser"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"pages": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"docs",
+					"total",
+					"limit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -144,38 +277,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"IAuthenticationResponse": {
-				"properties": {
-					"token": {
-						"type": "string"
-					},
-					"user": {
-						"$ref": "#/components/schemas/IUser"
-					}
-				},
-				"required": [
-					"token",
-					"user"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ILogin": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"username",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -197,6 +298,367 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/v1/authentication/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAuthenticationResponse"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserCreateDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/authentication/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAuthenticationResponse"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILogin"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/place": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPaginateResult_IPlace_"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"schema": {
+							"default": true,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"schema": {
+							"default": "_id",
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPlace"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IPlaceCreateDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/place/filter": {
+			"post": {
+				"operationId": "Filter",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPaginateResult_IPlace_"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 10,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sortAsc",
+						"required": false,
+						"schema": {
+							"default": true,
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fieldSort",
+						"required": false,
+						"schema": {
+							"default": "_id",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISearchAndFilter"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/place/{id}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPlace"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPlace"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IPlaceUpdateDto"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPlace"
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Place"
+				],
+				"security": [
+					{
+						"Bearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/v1/user/me": {
 			"get": {
 				"operationId": "GetMe",
@@ -518,70 +980,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/v1/authentication/signup": {
-			"post": {
-				"operationId": "Signup",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IAuthenticationResponse"
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IUserCreateDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/v1/authentication/login": {
-			"post": {
-				"operationId": "Login",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IAuthenticationResponse"
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ILogin"
-							}
-						}
-					}
-				}
 			}
 		}
 	},

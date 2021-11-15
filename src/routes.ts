@@ -94,7 +94,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "location": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
-            "password": { "dataType": "string", "required": true },
+            "specialField": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },

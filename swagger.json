@@ -178,14 +178,14 @@
 					"name": {
 						"type": "string"
 					},
-					"password": {
+					"specialField": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"location",
 					"name",
-					"password"
+					"specialField"
 				],
 				"type": "object",
 				"additionalProperties": false
